@@ -1,5 +1,32 @@
 {
   "dependencies": {
     "express": "^5.1.0"
-  }
+  },
+  "name": "project_03",
+  "version": "1.0.0",
+  "description": "node js hoi_dan_it", 
+  "main": "index.js",
+  "devDependencies": {
+    "@types/express": "5.0.0",
+    "@types/node": "22.10.7",
+    "typescript": "5.7.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datb2404981/h-c-backend---hoidanit.git"
+  },
+  "keywords": [
+    "nodejs",
+    "mongodb",
+    "backend"
+  ],
+  "author": "Van_Dat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/datb2404981/h-c-backend---hoidanit/issues"
+  },
+  "homepage": "https://github.com/datb2404981/h-c-backend---hoidanit#readme"
 }
