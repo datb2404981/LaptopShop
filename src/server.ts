@@ -2,14 +2,19 @@ import express from "express";
 import 'dotenv/config'
 import WebRouters from "./routers/web";
 import path from "path";
+import expressLayouts from 'express-ejs-layouts';
+
 
 const app = express();
 const port = process.env.PORT;
 
 //config view engine
 app.set('view engine', 'ejs');
-app.set('views',path.join(__dirname,'views'));
+app.set('views', path.join(__dirname, 'views'));
 
+//config layout view
+app.use(expressLayouts);
+app.set('layout', 'layout/main');
 //config routers
 WebRouters(app);
 
