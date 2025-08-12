@@ -1,0 +1,105 @@
+<div class="container-fluid mt-4 px-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>List Users </h1>
+    <input type="text" class="form-control w-25" placeholder="Search..." />
+  </div>
+
+  <table class="table align-middle table-custom">
+    <thead class="table-success">
+      <tr>
+        <th scope="col" style="width: 10%;">
+          <input type="checkbox" />
+        </th>
+        <th scope="col" style="width: 45%;">Name</th>
+        <th scope="col" style="width: 45%;">Address</th>
+      </tr>
+    </thead>
+      <tbody>
+        <% usersList.forEach(function(user) { %>
+          <tr>
+            <td>
+              <input type="checkbox" />
+            </td>
+            <!-- Cột Name -->
+            <td>
+              <div class="d-flex align-items-center">
+                <div class="avatar-circle me-2">
+                  <span>
+                    <%= user.name.charAt(0).toUpperCase() %>
+                  </span>
+                </div>
+                <div>
+                  <div class="fw-semibold">
+                    <%= user.name %>
+                  </div>
+                  <small class="text-muted">
+                    <%= user.email %>
+                  </small>
+                </div>
+              </div>
+              <!-- Cột Address -->
+            <td class="d-flex justify-content-between align-items-center">
+              <span class="fw-semibold">
+                <%= user.address %>
+              </span>
+              <div class="dropdown">
+                <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-three-dots"></i>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Edit</a></li>
+                  <li><a class="dropdown-item" href="#">Delete</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <% }); %>
+      </tbody>
+  </table>
+</div>
+
+<style>
+
+  .avatar-circle {
+  width: 32px;
+  height: 32px;
+  background-color: rgba(27, 125, 79, 0.15); /* nền xanh lá nhạt */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1B7D4F; /* chữ xanh */
+  }
+
+.table-success {
+  background-color: #28a745  !important; /* xanh lá đậm giống navbar */
+  color: white !important; /* chữ trắng nổi bật */
+}
+.table-custom {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.table-custom thead {
+  background-color: #1B7D4F; /* màu navbar */
+  color: white; /* chữ trắng để nổi bật */
+}
+
+.table-custom tbody tr {
+  border-bottom: 1px solid rgba(27, 125, 79, 0.2); /* viền xanh nhạt */
+}
+
+.table-custom tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table-custom tbody tr:hover {
+  background-color: rgba(27, 125, 79, 0.05); /* hover xanh nhạt */
+}
+
+.table-custom tbody td {
+  border: none;
+}
+</style>

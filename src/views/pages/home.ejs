@@ -1,16 +1,22 @@
-<html lang="en">
+<div class="container-fluid mt-4 px-4">
+  <% if (typeof success !=='undefined' && success) { %>
+    <div class="alert alert-success " role="alert" >
+      Create user succeed!
+    </div>
+    <% } %>
+</div>
+hello world with ejs
+<div>
+  <a href="/createUser">Create a new user</a>
+</div>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-
-<body>
-  hello world with ejs
-  <div>
-    <a href="/createUser">Create a new user</a>
-  </div>
-    
-</body>
-</html>
+<script>
+  setTimeout(function () {
+    const alertBox = document.querySelector('.alert');
+    if (alertBox) {
+      alertBox.style.transition = "opacity 0.5s ease";
+      alertBox.style.opacity = "0";
+      setTimeout(() => alertBox.remove(), 500); // xóa hẳn sau khi mờ
+    }
+  }, 500); // 1 giây
+</script>

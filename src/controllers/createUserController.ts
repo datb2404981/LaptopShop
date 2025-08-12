@@ -1,13 +1,19 @@
 import { Request, Response } from "express";
+import { handCreateUsers } from "../services/users";
 
 const getCreateUserPage = (req:Request , res:Response)=>{
   return res.render('pages/createUser.ejs');
 }
 
-const postCreateUserPage = (req:Request , res:Response)=>{
-  // Với các thuộc tính name đã được thêm vào form, bạn có thể lấy dữ liệu ở đây
-  console.log(">>> check req.body: ", req.body);
-  return res.redirect("/");
+const postCreateUserPage = async (req:Request , res:Response)=>{
+
+  //nhận data từ server
+  const { name, email, address } = req.body;
+  await handCreateUsers(name, email, address);
+
+  return res.redirect("/?success=true");
 }
+
+
 
 export { getCreateUserPage, postCreateUserPage };

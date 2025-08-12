@@ -1,5 +1,5 @@
 {
-  "CodeGPT.apiKey": "Github Copilot",
+  "CodeGPT.apiKey": "Anthropic",
   "javascript.updateImportsOnFileMove.enabled": "never",
   "files.autoSave": "afterDelay",
   "geminicodeassist.project": "gen-lang-client-0592516665",
