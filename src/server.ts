@@ -1,11 +1,11 @@
 import express from "express";
 import 'dotenv/config'
 import WebRouters from "./routers/web";
-import path from "path";
+import * as path from "path";
 import expressLayouts from 'express-ejs-layouts';
 import mysql from 'mysql2/promise';
-import { get } from "https";
-import { getConnection } from "./config/database";
+
+import { getConnection } from "config/database";
 
 const app = express();
 const port = process.env.PORT;
@@ -31,12 +31,11 @@ app.use((req, res, next) => {
   next(); // Important: pass control to the next handler
 });
 
-//config routers
-WebRouters(app);
-
-
 //config static files: images/css/js
 app.use(express.static('public'));
+
+//config routers
+WebRouters(app);
 
 app.listen(port, () => {
   console.log(`My server is http://localhost:${port}`);

@@ -1,0 +1,159 @@
+<div class="container-center">
+  <div class="profile-card">
+    <div class="avatar-wrapper">
+      <div class="avatar-circle">
+        <%= user && user.name ? user.name.charAt(0).toUpperCase() : "" %>
+      </div>
+      <div class="avatar-add">+</div>
+    </div>
+
+    <form action="/updateUser" method="post">
+      <input type="hidden" name="id" value="<%= user.id %>">
+
+      <label for="fullName">Full Name</label>
+      <div class="input-group">
+        <input type="text" id="fullName" name="name" value="<%= user.name %>" placeholder="Your Name">
+        <i class="bi bi-person"></i>
+      </div>
+
+      <label for="email">Email Address</label>
+      <div class="input-group">
+        <input type="email" id="email" name="email" value="<%= user.email %>" placeholder="example@your email">
+        <i class="bi bi-envelope"></i>
+      </div>
+
+      <label for="address">Home Address</label>
+      <textarea id="address" name="address" rows="3" placeholder="Your Address"><%= user.address %></textarea>
+
+      <button type="submit" class="btn-update">Update Profile</button>
+    </form>
+    
+    <div class="cancel"> 
+      <a href="/users" style="text-decoration: none; color: grey;">Cancel</a> 
+    </div>
+</div>
+
+<style>
+  body {
+    background-color: #d9e6eb;
+    font-family: Arial, sans-serif;
+  }
+
+  .container-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .profile-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    width: 320px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .avatar-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .avatar-circle {
+  width: 120px;
+  height: 120px;
+  background-color: rgba(27, 125, 79, 0.15); /* nền xanh nhạt */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 60px;
+  color: #1B7D4F; /* chữ xanh đậm */
+}
+
+  .avatar-add {
+    position: absolute;
+    bottom: 0;
+    right: calc(50% - 40px);
+    background-color: #fff;
+    border: 2px solid #ccc;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;   /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    font-weight: bold;
+    font-size: 16px; /* chỉnh cỡ dấu cộng */
+    line-height: 1;  /* bỏ ảnh hưởng chiều cao font */
+    cursor: pointer;
+  }
+
+  label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+  }
+
+  .input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .input-group input,
+  .input-group select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+  }
+
+  .input-group select {
+    max-width: 70px;
+    border-radius: 8px 0 0 8px;
+    border-right: none;
+  }
+
+  .input-group i {
+    position: absolute;
+    right: 10px;
+    color: #888;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+
+  .btn-update {
+    width: 100%;
+    padding: 12px;
+    background-color: #1B7D4F;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .btn-update:hover {
+    background-color: #166b40;
+  }
+
+  .cancel {
+    text-align: center;
+    margin-top: 10px;
+    color: #555;
+    cursor: pointer;
+  }
+</style>
