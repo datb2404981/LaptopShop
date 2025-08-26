@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@prisma/client": "^6.14.0",
     "bootstrap": "^5.3.7",
     "bootstrap-icons": "^1.13.1",
     "dotenv": "16.4.7",
@@ -16,6 +17,7 @@
     "@types/express": "5.0.0",
     "@types/node": "22.10.7",
     "nodemon": "3.1.9",
+    "prisma": "6.14.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3"

@@ -11,7 +11,6 @@ const postCreateUserPage = async (req:Request , res:Response)=>{
   //nhận data từ server
   const { name, email, address } = req.body;
   await handCreateUsers(name, email, address);
-
   return res.redirect("/?success=true");
 }
 

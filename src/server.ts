@@ -30,7 +30,7 @@ app.use((req, res, next) => {
   console.log(`[DEBUG] Request received: ${req.method} ${req.originalUrl}`);
   next(); // Important: pass control to the next handler
 });
-
+  
 //config static files: images/css/js
 app.use(express.static('public'));
 
