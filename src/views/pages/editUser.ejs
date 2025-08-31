@@ -2,7 +2,7 @@
   <div class="profile-card">
     <div class="avatar-wrapper">
       <div class="avatar-circle">
-        <%= user && user.name ? user.name.charAt(0).toUpperCase() : "" %>
+        <%= user && user.fullname ? user.fullname.charAt(0).toUpperCase() : "" %>
       </div>
       <div class="avatar-add">+</div>
     </div>
@@ -12,7 +12,7 @@
 
       <label for="fullName">Full Name</label>
       <div class="input-group">
-        <input type="text" id="fullName" name="name" value="<%= user.name %>" placeholder="Your Name">
+        <input type="text" id="fullName" name="name" value="<%= user.fullname %>" placeholder="Your Name">
         <i class="bi bi-person"></i>
       </div>
 

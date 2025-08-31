@@ -4,6 +4,7 @@ import WebRouters from "./routers/web";
 import * as path from "path";
 import expressLayouts from 'express-ejs-layouts';
 import mysql from 'mysql2/promise';
+import  {initDatabase } from "config/seed";
 
 import { getConnection } from "config/database";
 
@@ -33,10 +34,14 @@ app.use((req, res, next) => {
   
 //config static files: images/css/js
 app.use(express.static('public'));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 //config routers
 WebRouters(app);
+  
+//seeding data
+//initDatabase();
 
 app.listen(port, () => {
   console.log(`My server is http://localhost:${port}`);
-});
+});  

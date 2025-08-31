@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f5f6fa;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .bg-gradient-bottom {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 180px;
+      background: #f5f6fa;
+      z-index: 0;
+    }
+
+    .card-signup {
+      border-radius: 20px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+      padding: 32px 24px;
+      background: #fff;
+      z-index: 1;
+      position: relative;
+    }
+
+    .signup-title {
+      color: #218c5b;
+      font-weight: 700;
+    }
+
+    .btn-gradient {
+      background: #218c5b;
+      color: #fff;
+      border: none;
+    }
+
+    .btn-gradient:hover {
+      opacity: 0.9;
+      color: #fff;
+      background: #176943;
+    }
+
+    .btn-light {
+      background: #f5f6fa !important;
+      color: #218c5b !important;
+      border: 1px solid #218c5b !important;
+    }
+
+    .btn-light:hover {
+      background: #e2e6ea !important;
+      color: #176943 !important;
+      border: 1px solid #176943 !important;
+    }
+
+    /* Avatar upload */
+    .avatar-upload {
+      position: relative;
+      margin: 0 auto 20px;
+      width: 120px;
+      height: 120px;
+    }
+
+    .avatar-upload input {
+      display: none;
+    }
+
+    .avatar-preview {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: #f0f0f0;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .avatar-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-preview i {
+      font-size: 32px;
+      color: #666;
+      position: absolute;
+    }
+
+    .avatar-preview:hover {
+      border-color: #218c5b;
+      box-shadow: 0 0 10px rgba(33, 140, 91, 0.5);
+    }
+  /* Lớp phủ (overlay) cho nút thay đổi avatar */
+    .avatar-preview .avatar-edit-overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .avatar-preview:hover .avatar-edit-overlay {
+      opacity: 1;
+    }
+
+    .avatar-edit-overlay i {
+      font-size: 2rem;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-gradient-bottom"></div>
+  <div class="d-flex justify-content-center align-items-center"
+    style="min-height: 80vh; position: relative; z-index: 1;">
+    <div class="card-signup w-100" style="max-width: 400px;">
+
+      <h2 class="text-center mb-4 signup-title">Update Account</h2>
+
+      <form action="/admin/updateUser" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="<%= user.id %>">
+
+        <!-- Avatar Upload (đặt lên trên cùng) -->
+        <div class="avatar-upload text-center">
+          <div class="avatar-preview mx-auto" id="avatarPreview">
+            <% if (user && user.avatar) { %>
+              <img src="/images/<%= user.avatar %>" alt="Avatar" id="avatarImage">
+              <div class="avatar-edit-overlay">
+                <i class="bi bi-plus-circle"></i>
+              </div>
+            <% } else { %>
+              <i class="bi bi-camera"></i>
+            <% } %>
+          </div>
+          <input type="file" id="avatarInput" name="avatar" accept="image/*" style="display: none;">
+        </div>
+        <div class="mb-3 input-group">
+          <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+          <input value= "<%= user.fullname%>" 
+           type="text" class="form-control" placeholder="Name" name="fullname" required>
+        </div>
+        <div class="mb-3 input-group">
+          <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+          <input value= "<%= user.username %>" type="email" class="form-control" placeholder="E-mail" name="username" required>
+        </div>
+        <div class="mb-3 input-group">
+          <span class="input-group-text bg-light"><i class="bi bi-geo-alt"></i> </span>
+          <input value= "<%= user.address %>" type="text" class="form-control" placeholder="Address" name="address" required>
+        </div>
+        <!-- Password nhập lại mật khẩu vs tạo mới mật khẩu -->
+          <div class="mb-3 input-group">
+            <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+            <input type="password" class="form-control" placeholder="Current Password" name="oldPassword" id="oldPassword" required>
+            <button type="button" class="btn btn-light" onclick="togglePassword('oldPassword', this)">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+
+          <!-- Thông báo lỗi -->
+          <% if (typeof check_password !=="undefined" && check_password===false) { %>
+            <div class="text-danger small">Wrong password, please try again.</div>
+            <% } %>
+          
+          <div class="mb-3 input-group">
+            <span class="input-group-text bg-light"><i class="bi bi-lock-fill"></i></span>
+            <input type="password" class="form-control" placeholder="New Password" name="newPassword" id="newPassword" required>
+            <button type="button" class="btn btn-light" onclick="togglePassword('newPassword', this)">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+        <div class="mb-3 row">
+          <!-- Phone -->
+          <div class="col-6">
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-telephone"></i></span>
+              <input value= "<%= user.phone %>"  type="text" class="form-control" placeholder="Phone" name="phone" required>
+            </div>
+          </div>
+
+          <!-- Role -->
+          <div class="col-6">
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-person-badge"></i></span>
+              <select class="form-select" name="role" placeholder="Role" required>
+                <% roles.forEach(function(role){ %>
+                  <option value="<%= role.id %>" 
+                    <%= role.id===user.roleId ? 'selected' : '' %>
+                    >
+                    <%= role.name %>
+                  </option>
+                  <% }); %>
+              </select>
+            </div>
+          </div>
+
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-gradient flex-fill">Update Profile</button>
+        </div>
+      </form>
+      <div class="cancel text-center">
+        <a href="/admin/user" style="text-decoration: none; color: grey;">Cancel</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script cho Avatar Preview
+    const avatarInput = document.getElementById('avatarInput');
+    const avatarPreview = document.getElementById('avatarPreview');
+
+    // Kích hoạt input file khi bấm vào khu vực preview
+    avatarPreview.addEventListener('click', function() {
+      avatarInput.click();
+    });
+
+    avatarInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          let image = document.getElementById('avatarImage');
+          // Nếu chưa có ảnh, tạo thẻ img mới
+          if (!image) {
+            avatarPreview.innerHTML = ''; // Xóa icon camera cũ
+            image = document.createElement('img');
+            image.id = 'avatarImage';
+            avatarPreview.appendChild(image);
+          }
+          // Cập nhật ảnh preview
+          image.src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+
+    function togglePassword(inputId, buttonElement) {
+      const passwordInput = document.getElementById(inputId);
+      const icon = buttonElement.querySelector('i');
+
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+      }
+    }
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+</body>
+
+</html>

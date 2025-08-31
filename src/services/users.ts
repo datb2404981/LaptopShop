@@ -1,18 +1,32 @@
 import { User } from './../generated/prisma/index.d';
 import { getConnection } from "config/database";
 import { prisma } from 'config/client';
+import  Prisma  from '@prisma/client';
+import { ACCOUNT_TYPE } from 'config/constan';
+import bcrypt from "bcrypt";
 
+const saltRounds = 10;
 const handCreateUsers = async(
   name: string,
   email: string,
-  address : string,
+  address: string,
+  password: string,
+  phone: string,
+  avatar: string,
+  role: string
 ) => {
 
-  const newUser = prisma.user.create({
+  const passwordcoding = await bcrypt.hash(password,saltRounds)
+  const newUser = await prisma.user.create({
     data: {
-      name: name,
-      email: email,
+      fullname : name,
+      username: email,
       address: address,
+      password: passwordcoding,
+      accountType: ACCOUNT_TYPE.SYSTEM,
+      phone: phone,
+      avatar: avatar,
+      roleId : +role
     },
   })
   return newUser;
@@ -23,6 +37,12 @@ const getAllUsers = async () => {
   return users;
 };
 
+const getAllRole = async () => {
+  const role = prisma.role.findMany();
+  return role;
+};
+
+
 const getUser = async (id: string) => {
   const user = await prisma.user.findFirst({
     where: { id: +id },
@@ -30,27 +50,48 @@ const getUser = async (id: string) => {
   return user;
 }
 
-const handDeleteUsers = async (id: string)=>{
+const getRole = async (id: string) => {
+  const role = await prisma.role.findFirst({
+    where: { id: +id },
+  })
+  return role;
+}
+
+const handDeleteUsers = async (id: string) => {
   const userDelete = await prisma.user.delete({
     where: {
       id: +id,
     },
-  })
-  return userDelete;
+  });
+ return userDelete;
 }
 
-const handUpdateUsers = async (id : string, name :string, email:string, address:string )=>{
+const handUpdateUsers = async (id : string, fullname :string, username :string, address :string , avatar: string  , password :string, phone :string ,role :string)=>{
   const userUpdate = await prisma.user.update({
     where: {
       id: +id,
     },
     data: {
-      name: name,
-      email: email,
+      fullname : name,
+      username: email,
       address: address,
+      password: "",
+      accountType: "",
+      phone: "",
+      avatar: ""
     }
   })
   return userUpdate;
 }
 
-export { getAllUsers,getUser, handCreateUsers,handDeleteUsers,handUpdateUsers }
+const handCheckPassword = async (id: string, oldPassword: string) => {
+  const user = await getUser(id);
+  const isMatch = await bcrypt.compare(oldPassword,user.password );
+  return isMatch;
+}
+
+export {
+  getAllUsers, getUser, handCreateUsers,
+  handDeleteUsers, handUpdateUsers, getAllRole,
+  getRole,handCheckPassword
+}
