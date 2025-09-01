@@ -1,0 +1,97 @@
+<style>
+  /* Menu link mặc định */
+  .sb-sidenav .nav-link {
+    color: #16a34a;
+    /* xanh lá đậm */
+    font-weight: 500;
+    border-radius: 12px;
+    padding: 10px 15px;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Icon mặc định xanh lá */
+  .sb-sidenav .nav-link i {
+    color: #16a34a;
+    font-size: 16px;
+  }
+
+  /* Hover: nền xanh lá nhạt + chữ xanh lá đậm */
+  .sb-sidenav .nav-link:hover {
+    background-color: #d1fae5;
+    /* xanh lá nhạt */
+    color: #16a34a !important;
+    /* đổi chữ thành xanh lá đậm */
+  }
+
+  .sb-sidenav .nav-link:hover i {
+    color: #16a34a !important;
+    /* icon cũng xanh lá đậm */
+  }
+
+  /* Active: nền xanh lá đậm + chữ trắng */
+  .sb-sidenav .nav-link.active {
+    background-color: #16a34a;
+    color: #fff !important;
+  }
+
+  .sb-sidenav .nav-link.active i {
+    color: #fff !important;
+  }
+
+  /* My Shop giữ đen */
+  .sb-sidenav h4 {
+    color: #000 !important;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+</style>
+
+
+<div id="layoutSidenav_nav">
+  <nav class="sb-sidenav sb-sidenav-light" id="sidenavAccordion"
+    style="background-color: #fff; border-right: 1px solid #eee;">
+    <div class="sb-sidenav-menu p-3">
+      <h3 class="fw-bold mb-4">My Shop</h3>
+      <div class="nav flex-column">
+
+        <a class="nav-link d-flex align-items-center mb-2 active" href="/admin/dashboard">
+          <i class="bi bi-grid me-2"></i>
+          Dashboard
+        </a>
+
+        <a class="nav-link d-flex align-items-center mb-2" href="/admin/user">
+          <i class="bi bi-people  me-2"></i>
+          User
+        </a>
+
+        <a class="nav-link d-flex align-items-center mb-2" href="/admin/product">
+          <i class="bi bi-box me-2"></i>
+          Products
+        </a>
+
+        <a class="nav-link d-flex align-items-center mb-2" href="/admin/order">
+          <i class="bi bi-bag  me-2"></i>
+          Orders
+        </a>
+
+      </div>
+    </div>
+  </nav>
+</div>
+
+<script>
+  // Lấy đường dẫn hiện tại (chỉ phần pathname sau domain)
+  const currentPath = window.location.pathname;
+
+  // Lấy tất cả các link trong sidebar
+  document.querySelectorAll(".sb-sidenav .nav-link").forEach(link => {
+    if (link.getAttribute("href") === currentPath) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
+    }
+  });
+</script>

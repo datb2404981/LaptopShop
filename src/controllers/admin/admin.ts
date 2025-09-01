@@ -4,7 +4,7 @@ import { getAllUsers } from 'services/users';
 
 const getAdmin = async (req: Request, res: Response) => {
 
-  return res.render('pages/admin/Dashboard/show', { page_type: 'admin' });
+  return res.render('pages/admin/Dashboard/show', { layout : 'layouts/adminLayout'});
 };
 
 const getUser = async (req: Request, res: Response) => {
@@ -13,17 +13,17 @@ const getUser = async (req: Request, res: Response) => {
   return res.render('pages/admin/User/show', {
     usersList: userList,
     success: success,
-    page_type: 'admin'});
+    layout : 'layouts/adminLayout'});
 };
 
 const getProduct = async (req: Request, res: Response) => {
 
-  return res.render('pages/admin/Product/show', { page_type: 'admin' });
+  return res.render('pages/admin/Product/show', { layout : 'layouts/adminLayout' });
 };
 
 const getOrder = async (req: Request, res: Response) => {
 
-  return res.render('pages/admin/Order/show', { page_type: 'admin' });
+  return res.render('pages/admin/Order/show', { layout : 'layouts/adminLayout' });
 };
 
 export { getAdmin,getUser,getProduct,getOrder } 

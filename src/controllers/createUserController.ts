@@ -5,7 +5,7 @@ import { handCreateUsers,handDeleteUsers,getUser, getAllRole } from "services/us
 
 const getCreateUserPage = async (req: Request, res: Response) => {
   const roles = await getAllRole();
-  return res.render('pages/admin/User/create.ejs',{ roles });
+  return res.render('pages/admin/User/create.ejs',{ roles, layout: 'layouts/adminLayout' });
 }
 
 const postCreateUserPage = async (req:Request , res:Response)=>{
@@ -14,7 +14,7 @@ const postCreateUserPage = async (req:Request , res:Response)=>{
   //nhận data từ server
   const { fullname, username, address ,password, phone, role } = req.body;
   await handCreateUsers(fullname, username, address,password,phone, avatar, role);
-  return res.redirect("/?success=true");
+  return res.redirect("/admin/user");
 }
 
 

@@ -67,19 +67,28 @@ const handDeleteUsers = async (id: string) => {
 }
 
 const handUpdateUsers = async (id : string, fullname :string, username :string, address :string , avatar: string  , password :string, phone :string ,role :string)=>{
+  
+  const dataToUpdate: any = {
+      fullname : fullname,
+      username: username,
+      address: address,
+      phone: phone,
+      avatar: avatar,
+  };
+
+  if (password) {
+      const passwordcoding = await bcrypt.hash(password, saltRounds);
+      dataToUpdate.password = passwordcoding;
+  }
+  if(role){
+    dataToUpdate.roleId = +role
+  }
+
   const userUpdate = await prisma.user.update({
     where: {
       id: +id,
     },
-    data: {
-      fullname : name,
-      username: email,
-      address: address,
-      password: "",
-      accountType: "",
-      phone: "",
-      avatar: ""
-    }
+    data: dataToUpdate
   })
   return userUpdate;
 }

@@ -1,0 +1,99 @@
+<style>
+  .toggle-group {
+    display: inline-flex;
+    border: 2px solid #6cc24a;
+    /* viền xanh lá */
+    border-radius: 40px;
+    /* pill */
+    background: #fff;
+    padding: 4px;
+    /* khoảng trống cho nút active */
+  }
+
+  .toggle-btn {
+    flex: 1;
+    padding: 10px 22px;
+    /* nhỏ hơn bản trước */
+    border: none;
+    background: transparent;
+    color: #6cc24a;
+    font-size: 16px;
+    /* chữ vừa */
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    border-radius: 30px;
+    /* để active bo tròn */
+    transition: all 0.3s ease;
+  }
+
+  .toggle-btn.active {
+    background: #6cc24a;
+    /* nền xanh lá */
+    color: #fff;
+    /* chữ trắng */
+  }
+</style>
+
+
+<!-- Navbar start -->
+<div class="container-fluid fixed-top">
+  <div class="container px-0">
+    <nav class="navbar navbar-light bg-white navbar-expand-xl">
+      <a href="/" class="navbar-brand">
+        <h1 class="text-primary display-6">LaptopShop</h1>
+      </a>
+      <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="fa fa-bars text-primary"></span>
+      </button>
+      <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+        <div class="navbar-nav mx-auto">
+          <div class="toggle-group">
+            <button class="toggle-btn active" id="homeBtn">
+              <i class="bi bi-house-door"></i> Home
+            </button>
+            <button class="toggle-btn" id="shopBtn">
+              <i class="bi bi-bag"></i> Shop
+            </button>
+          </div>
+        </div>
+
+        <div class="d-flex m-3 me-0">
+          <a href="#" class="position-relative me-4 my-auto">
+            <i class="fa fa-shopping-bag fa-2x"></i>
+            <span
+              class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
+              style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+          </a>
+          <a href="#" class="my-auto">
+            <i class="fas fa-user fa-2x"></i>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+<!-- Navbar End -->
+
+<script>
+  const homeBtn = document.getElementById("homeBtn");
+  const shopBtn = document.getElementById("shopBtn");
+
+  function setActive(btn) {
+    document.querySelectorAll(".toggle-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  }
+
+  homeBtn.addEventListener("click", () => {
+    setActive(homeBtn);
+    window.location.href = "/";
+  });
+
+  shopBtn.addEventListener("click", () => {
+    setActive(shopBtn);
+    window.location.href = "/product";
+  });
+</script>

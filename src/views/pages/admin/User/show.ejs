@@ -47,20 +47,29 @@
             <!-- Name -->
             <td>
               <div class="d-flex align-items-center">
-                <div class="avatar-circle me-2">
-                  <span>
-                    <%= user.fullname ? user.fullname.charAt(0).toUpperCase() : 'N' %>
-                  </span>
-                </div>
-                <div>
-                  <div class="fw-semibold">
-                    <%= user.fullname || 'No Name' %>
-                  </div>
-                  <small class="text-muted">
-                    <%= user.username %>
-                  </small>
-                </div>
+                <% if (user.avatar && user.avatar.trim() !=='' ) { %>
+                  <!-- Có avatar thì load ảnh -->
+                  <img src="/images/<%= user.avatar %>" alt="avatar" class="rounded-circle me-2"
+                    style="width: 40px; height: 40px; object-fit: cover;">
+                  <% } else { %>
+                    <!-- Không có avatar thì hiển thị chữ cái đầu -->
+                    <div class="avatar-circle me-2">
+                      <span>
+                        <%= user.fullname ? user.fullname.charAt(0).toUpperCase() : 'N' %>
+                      </span>
+                    </div>
+                    <% } %>
+              
+                      <div>
+                        <div class="fw-semibold">
+                          <%= user.fullname || 'No Name' %>
+                        </div>
+                        <small class="text-muted">
+                          <%= user.username %>
+                        </small>
+                      </div>
               </div>
+
             </td>
       
             <!-- Address -->
@@ -97,7 +106,7 @@
                           <% } else { %>
                             <span class="role-badge other">
                               <i class="bi bi-question-circle-fill"></i>
-                              <%= user.accountType %>
+                              USER
                             </span>
                             <% } %>
               </div>
