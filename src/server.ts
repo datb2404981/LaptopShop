@@ -9,6 +9,8 @@ import passport from "passport";
 import { getConnection } from "config/database";
 import configPassportLocal from "middleware/passport.local";
 import session from "express-session";
+import { PrismaSessionStore } from '@quixo3/prisma-session-store';
+import  { PrismaClient }  from '@prisma/client';
 
 const app = express();
 const port = process.env.PORT;
@@ -40,17 +42,40 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 //config session
 app.use(session({
-  secret: 'keyboard cat',
+  cookie: {
+     maxAge: 7 * 24 * 60 * 60 * 1000 // ms
+    },
+  secret: 'a santa at nasa',
+    //forces session save even if unchanged
   resave: false,
-  saveUninitialized: true
+    
+  //save unmodified sessions
+    saveUninitialized: false,
+    store: new PrismaSessionStore(
+      new PrismaClient(),
+      {
+        //Clears expired session every 1 day
+        checkPeriod: 1 * 24 * 60 * 60 * 1000,  //ms
+        dbRecordIdIsSessionId: true,
+        dbRecordIdFunction: undefined,
+      }
+    )
 }));
+
 
 //config passport 
 app.use(passport.initialize());
 app.use(passport.authenticate('session'));
 configPassportLocal();
 
-//config routers
+//config global
+app.use((req, res, next) => {
+  res.locals.user = req.user || null; // Pass user object to all views
+  next();
+
+});
+
+//config routers 
 WebRouters(app);
   
 //seeding data

@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -62,4 +61,11 @@ model Product {
   target     String  @db.VarChar(255)
 
   @@map("products")
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String  @db.MediumText
+  expiresAt   DateTime
 }

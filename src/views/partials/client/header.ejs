@@ -1,184 +1,293 @@
 <style>
-  .toggle-group {
-    display: inline-flex;
-    border: 2px solid #6cc24a;
-    /* viền xanh lá */
-    border-radius: 40px;
-    /* pill */
-    background: #fff;
-    padding: 4px;
-    /* khoảng trống cho nút active */
-  }
-
-  .toggle-btn {
-    flex: 1;
-    padding: 10px 22px;
-    /* nhỏ hơn bản trước */
-    border: none;
-    background: transparent;
-    color: #6cc24a;
-    font-size: 16px;
-    /* chữ vừa */
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    cursor: pointer;
-    border-radius: 30px;
-    /* để active bo tròn */
-    transition: all 0.3s ease;
-  }
-
-  .toggle-btn.active {
-    background: #6cc24a;
-    /* nền xanh lá */
-    color: #fff;
-    /* chữ trắng */
-  }
-  .text-success {
-  color: #7CB342 !important;
-}
-/* Đổi màu xanh success */
-.bg-success {
-  color: #7CB342 !important;
-  background-color: #7CB342 !important;
-}
-
-.dropdown-menu .dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 15px;
-  color: #333;
-  transition: all 0.2s ease-in-out;
-}
-
-.dropdown-menu .dropdown-item i {
-  color: #7CB342; /* icon xanh lá */
-  font-size: 16px;
-}
-
-/* Hover đẹp giống sidebar */
-.dropdown-menu .dropdown-item:hover {
-  background-color: #E8F5E9 !important;
-  color: #7CB342 !important;
-  font-weight: 600;
-}
-
-/* Active (khi đang chọn) */
-.dropdown-menu .dropdown-item.active {
-  background-color: #E8F5E9 !important;
-  color: #7CB342 !important;
-  font-weight: 600;
-}
-#cartBadge {
-  width: 12px;
-  height: 12px;
-}
-
-
-
-</style>
-
-
-<!-- Navbar start -->
-<div class="container-fluid fixed-top">
-  <div class="container px-0">
-    <nav class="navbar navbar-light bg-white navbar-expand-xl">
-      <a href="/" class="navbar-brand">
-        <h1 class="text-success display-6">LaptopShop</h1>
-      </a>
-      <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-        <span class="fa fa-bars text-success"></span>
-      </button>
-      <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-        <div class="navbar-nav mx-auto">
-          <div class="toggle-group">
-            <button class="toggle-btn active" id="homeBtn">
-              <i class="bi bi-house-door"></i> Home
-            </button>
-            <button class="toggle-btn" id="shopBtn">
-              <i class="bi bi-bag"></i> Shop
-            </button>
-          </div>
-        </div>
-
-        <div class="d-flex align-items-center">
-          <!-- Giỏ hàng -->
-          <a href="#" class="position-relative me-4 my-auto">
-            <i class="fa fa-shopping-bag fa-2x text-success"></i>
-            <!-- Badge chỉ hiện khi có sản phẩm -->
-            <span id="cartBadge"
-              class="position-absolute top-0 start-100 translate-middle p-1 bg-primary border border-light rounded-circle d-none">
-            </span>
-          </a>
-
-        
-          <!-- User dropdown -->
-          <div class="dropdown">
-            <a class="d-flex align-items-center text-decoration-none" href="#" id="userDropdown" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              <i class="fas fa-user-circle fa-2x text-success"></i>
-              <i class="bi bi-caret-down-fill text-success "></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 p-2" aria-labelledby="userDropdown">
-              <li>
-                <a class="dropdown-item d-flex align-items-center rounded-2 py-2" href="#">
-                  <i class="fas fa-id-card me-2 text-success"></i>Account Info
-                </a>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li>
-                <a class="dropdown-item d-flex align-items-center rounded-2 py-2" href="/signup">
-                  <i class="fas fa-user-plus me-2 text-success"></i> Sign Up
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item d-flex align-items-center rounded-2 py-2" href="/login">
-                  <i class="fas fa-sign-in-alt me-2 text-success"></i> Log In
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
-    </nav>
-  </div>
-</div>
-<!-- Navbar End -->
-
-<script>
-  const homeBtn = document.getElementById("homeBtn");
-  const shopBtn = document.getElementById("shopBtn");
-
-  function setActive(btn) {
-    document.querySelectorAll(".toggle-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-  }
-
-  homeBtn.addEventListener("click", () => {
-    setActive(homeBtn);
-    window.location.href = "/";
-  });
-
-  shopBtn.addEventListener("click", () => {
-    setActive(shopBtn);
-    window.location.href = "/product";
-  });
-
-  // Giả sử bạn có biến lưu số lượng sản phẩm
-    let cartCount = 3; // ví dụ có 3 món
-
-    const cartBadge = document.getElementById("cartBadge");
-
-    if (cartCount > 0) {
-      cartBadge.classList.remove("d-none"); // hiện chấm xanh
-    } else {
-      cartBadge.classList.add("d-none"); // ẩn nếu không có hàng
+    /* =======================
+       1. Toggle Button (Home / Shop)
+    ======================= */
+    .toggle-group {
+      display: inline-flex;
+      border: 2px solid #6cc24a;
+      border-radius: 40px;
+      background: #fff;
+      padding: 4px;
     }
 
-</script>
+    .toggle-btn {
+      flex: 1;
+      padding: 10px 22px;
+      border: none;
+      background: transparent;
+      color: #6cc24a;
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-btn.active {
+      background: #6cc24a;
+      color: #fff;
+    }
+
+    /* =======================
+       2. Custom Colors
+    ======================= */
+    .text-success {
+      color: #7CB342 !important;
+    }
+
+    .bg-success {
+      background-color: #7CB342 !important;
+      color: #fff !important;
+    }
+
+    /* =======================
+       3. Badge Giỏ hàng
+    ======================= */
+    #cartBadge {
+      width: 12px;
+      height: 12px;
+      min-width: 12px;
+      min-height: 12px;
+      border-radius: 50%;
+    }
+
+    /* =======================
+       4. Auth Buttons (Sign Up / Login)
+    ======================= */
+    .btn-auth {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    /* Sign Up (outline xanh lá) */
+    .btn-signup {
+      border: 2px solid #6cc24a;
+      background: transparent;
+      color: #6cc24a;
+    }
+
+    .btn-signup:hover {
+      background: #6cc24a;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(108, 194, 74, 0.4);
+    }
+
+    /* Login (xanh lá đặc) */
+    .btn-login {
+      border: 2px solid #6cc24a;
+      background: #6cc24a;
+      color: #fff;
+      margin-left: 10px;
+    }
+
+    .btn-login:hover {
+      background: #5cab3f;
+      border-color: #5cab3f;
+      box-shadow: 0 4px 12px rgba(92, 171, 63, 0.5);
+    }
+
+    /* =======================
+       5. Dropdown Menu (User)
+    ======================= */
+    .dropdown-menu {
+      width: 250px;
+      border: none;
+      border-radius: 16px;
+      padding: 18px 16px;
+      background: #fff;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .dropdown-header {
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .dropdown-header img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #e8f5e9;
+      margin-bottom: 8px;
+    }
+
+    .dropdown-header .username {
+      font-weight: 600;
+      color: #333;
+      font-size: 15px;
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: #eee;
+      margin: 12px 0;
+    }
+
+    .dropdown-menu .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: #444;
+      font-size: 14px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .dropdown-menu .dropdown-item i {
+      font-size: 16px;
+      color: #7CB342;
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+      background: #f4fdf6;
+      color: #6cc24a;
+      font-weight: 500;
+    }
+
+    .dropdown-menu .dropdown-item.logout {
+      color: #e53935;
+    }
+
+    .dropdown-menu .dropdown-item.logout i {
+      color: #e53935;
+    }
+
+    .dropdown-menu .dropdown-item.logout:hover {
+      background: #fdeaea;
+    }
+  </style>
+  <!-- Navbar start -->
+  <div class="container-fluid fixed-top">
+    <div class="container px-0">
+      <nav class="navbar navbar-light bg-white navbar-expand-xl">
+        <a href="/" class="navbar-brand">
+          <h1 class="text-success display-6">LaptopShop</h1>
+        </a>
+        <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarCollapse">
+          <span class="fa fa-bars text-success"></span>
+        </button>
+        <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+          <div class="navbar-nav mx-auto">
+            <div class="toggle-group">
+              <button class="toggle-btn active" id="homeBtn">
+                <i class="bi bi-house-door"></i> Home
+              </button>
+              <button class="toggle-btn" id="shopBtn">
+                <i class="bi bi-bag"></i> Shop
+              </button>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center">
+            <!-- Giỏ hàng -->
+            <a href="#" class="position-relative me-4 my-auto">
+              <i class="fa fa-shopping-bag fa-2x text-success"></i>
+              <span id="cartBadge"
+                class="position-absolute top-0 start-100 translate-middle p-1 bg-primary border border-light rounded-circle d-none">
+              </span>
+            </a>
+
+            <!-- User dropdown -->
+            <!-- User dropdown -->
+            <div class="dropdown my-auto">
+              <!-- Icon User -->
+              <a href="#" class="dropdown-toggle" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <i class="fas fa-user-circle fa-2x text-success"></i>
+              </a>
+            
+              <!-- Dropdown -->
+              <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 p-3" aria-labelledby="dropdownMenuLink"
+                style="min-width: 280px;">
+            
+                <!-- Avatar + username -->
+                <li class="d-flex flex-column align-items-center">
+                  <img src="/images/default-avatar.png" class="rounded-circle border border-2 border-success"
+                    style="width: 100px; height: 100px; object-fit: cover;" />
+                  <div class="mt-2 fw-semibold">@hoidanit</div>
+                </li>
+            
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+            
+                <!-- Menu items -->
+                <li>
+                  <a class="dropdown-item d-flex align-items-center gap-2" href="#">
+                    <i class="fas fa-user-cog text-success"></i> Quản lý tài khoản
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item d-flex align-items-center gap-2" href="/order-history">
+                    <i class="fas fa-history text-success"></i> Lịch sử mua hàng
+                  </a>
+                </li>
+            
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+            
+                <!-- Logout -->
+                <li>
+                  <form method="post" action="/logout">
+                    <button class="dropdown-item d-flex align-items-center gap-2 text-danger fw-semibold">
+                      <i class="fas fa-sign-out-alt"></i> Log Out
+                    </button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <!-- Navbar End -->
+
+  
+
+  <script>
+    const homeBtn = document.getElementById("homeBtn");
+    const shopBtn = document.getElementById("shopBtn");
+
+    function setActive(btn) {
+      document.querySelectorAll(".toggle-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+
+    homeBtn.addEventListener("click", () => {
+      setActive(homeBtn);
+      window.location.href = "/";
+    });
+
+    shopBtn.addEventListener("click", () => {
+      setActive(shopBtn);
+      window.location.href = "/product";
+    });
+
+    // Badge giỏ hàng
+    let cartCount = 3; // ví dụ có 3 món
+    const cartBadge = document.getElementById("cartBadge");
+    if (cartCount > 0) {
+      cartBadge.classList.remove("d-none");
+    } else {
+      cartBadge.classList.add("d-none");
+    }
+  </script>
+</body>
+
+</html>

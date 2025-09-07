@@ -3,6 +3,8 @@ import { getAllProduct } from "services/products";
 
 const getHomePage =  async (req: Request, res: Response) => {
   const products = await getAllProduct();
+  const user = req.user;
+  console.log(">>> current user:", user);
   return res.render('pages/client/home/show.ejs', { products,layout: 'layouts/clientLayout'});
 }
 

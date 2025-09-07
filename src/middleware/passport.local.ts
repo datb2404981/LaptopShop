@@ -1,6 +1,7 @@
 import { handleLogin } from 'services/auth';
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
+import { getUser } from 'services/users';
 
 const configPassportLocal = () => {
   passport.use(new LocalStrategy({
@@ -15,15 +16,16 @@ const configPassportLocal = () => {
   }));
 
   passport.serializeUser(function(user:any, cb) {
-  process.nextTick(function() {
       cb(null, { id: user.id, username: user.username });
-    });
+    
   });
 
-  passport.deserializeUser(function(user, cb) {
-  process.nextTick(function() {
-      return cb(null, user);
-    });
+  passport.deserializeUser(async function (user:any, cb) {
+    const { id, username } = user;
+    //query to database
+    const userInDB = await getUser(id)
+    return cb(null, userInDB);
+    
   });
 }
 
