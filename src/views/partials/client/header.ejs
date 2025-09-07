@@ -36,6 +36,49 @@
     color: #fff;
     /* chữ trắng */
   }
+  .text-success {
+  color: #7CB342 !important;
+}
+/* Đổi màu xanh success */
+.bg-success {
+  color: #7CB342 !important;
+  background-color: #7CB342 !important;
+}
+
+.dropdown-menu .dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  color: #333;
+  transition: all 0.2s ease-in-out;
+}
+
+.dropdown-menu .dropdown-item i {
+  color: #7CB342; /* icon xanh lá */
+  font-size: 16px;
+}
+
+/* Hover đẹp giống sidebar */
+.dropdown-menu .dropdown-item:hover {
+  background-color: #E8F5E9 !important;
+  color: #7CB342 !important;
+  font-weight: 600;
+}
+
+/* Active (khi đang chọn) */
+.dropdown-menu .dropdown-item.active {
+  background-color: #E8F5E9 !important;
+  color: #7CB342 !important;
+  font-weight: 600;
+}
+#cartBadge {
+  width: 12px;
+  height: 12px;
+}
+
+
+
 </style>
 
 
@@ -44,10 +87,10 @@
   <div class="container px-0">
     <nav class="navbar navbar-light bg-white navbar-expand-xl">
       <a href="/" class="navbar-brand">
-        <h1 class="text-primary display-6">LaptopShop</h1>
+        <h1 class="text-success display-6">LaptopShop</h1>
       </a>
       <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-        <span class="fa fa-bars text-primary"></span>
+        <span class="fa fa-bars text-success"></span>
       </button>
       <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
         <div class="navbar-nav mx-auto">
@@ -61,17 +104,47 @@
           </div>
         </div>
 
-        <div class="d-flex m-3 me-0">
+        <div class="d-flex align-items-center">
+          <!-- Giỏ hàng -->
           <a href="#" class="position-relative me-4 my-auto">
-            <i class="fa fa-shopping-bag fa-2x"></i>
-            <span
-              class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
-              style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+            <i class="fa fa-shopping-bag fa-2x text-success"></i>
+            <!-- Badge chỉ hiện khi có sản phẩm -->
+            <span id="cartBadge"
+              class="position-absolute top-0 start-100 translate-middle p-1 bg-primary border border-light rounded-circle d-none">
+            </span>
           </a>
-          <a href="#" class="my-auto">
-            <i class="fas fa-user fa-2x"></i>
-          </a>
+
+        
+          <!-- User dropdown -->
+          <div class="dropdown">
+            <a class="d-flex align-items-center text-decoration-none" href="#" id="userDropdown" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <i class="fas fa-user-circle fa-2x text-success"></i>
+              <i class="bi bi-caret-down-fill text-success "></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 p-2" aria-labelledby="userDropdown">
+              <li>
+                <a class="dropdown-item d-flex align-items-center rounded-2 py-2" href="#">
+                  <i class="fas fa-id-card me-2 text-success"></i>Account Info
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center rounded-2 py-2" href="/signup">
+                  <i class="fas fa-user-plus me-2 text-success"></i> Sign Up
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center rounded-2 py-2" href="/login">
+                  <i class="fas fa-sign-in-alt me-2 text-success"></i> Log In
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
+
       </div>
     </nav>
   </div>
@@ -96,4 +169,16 @@
     setActive(shopBtn);
     window.location.href = "/product";
   });
+
+  // Giả sử bạn có biến lưu số lượng sản phẩm
+    let cartCount = 3; // ví dụ có 3 món
+
+    const cartBadge = document.getElementById("cartBadge");
+
+    if (cartCount > 0) {
+      cartBadge.classList.remove("d-none"); // hiện chấm xanh
+    } else {
+      cartBadge.classList.add("d-none"); // ẩn nếu không có hàng
+    }
+
 </script>

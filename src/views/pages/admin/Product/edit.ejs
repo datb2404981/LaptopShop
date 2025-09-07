@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Product</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a2d9d6c8c4.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .content {
+      padding: 2rem;
+    }
+
+    .card {
+      border-radius: 1rem;
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    .upload-box {
+      border: 2px dashed #dee2e6;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      background: #f8f9fa;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upload-box.dragover {
+      border-color: #0d6efd;
+      background: #eef5ff;
+    }
+
+    .upload-box input[type="file"] {
+      display: none;
+    }
+
+    .upload-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+    }
+
+    .upload-preview {
+      width: 100%;
+      display: none;
+    }
+
+    .upload-preview img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+      max-height: 500px;
+    }
+    .product-img {
+      width: 100%;
+      height: 250px;     /* có thể chỉnh theo ý */
+      object-fit: cover; /* cho ảnh đầy khung, crop gọn */
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="d-flex">
+    <div class="content flex-grow-1">
+      <h4 class="mb-4">Update Product</h4>
+
+        <form action="/admin/product/updateProduct" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="<%= product.id %>">
+        <div class="row g-4">
+          <!-- Left -->
+          <div class="col-lg-8">
+            <div class="card p-3 h-100">
+              <h5 class="mb-3">
+                <i class="bi bi-card-text me-2 text-success"></i> Description
+              </h5>
+
+              <!-- Product Name -->
+              <div class="mb-3">
+                <label class="form-label">Product Name</label>
+                <input type="text"
+                  class="form-control <%= (typeof errors !== 'undefined' && errors.name) ? 'is-invalid' : '' %>"
+                  placeholder="Enter product name" name="name"
+                  value="<%= (typeof old !== 'undefined' && old.name) ? old.name : (product.name || '') %>">
+                <% if (typeof errors !=='undefined' && errors.name) { %>
+                  <div class="invalid-feedback">
+                    <%= errors.name[0] %>
+                  </div>
+                  <% } %>
+              </div>
+
+              <!-- Short Description -->
+              <div class="mb-4">
+                <label class="form-label fw-medium mb-2">Short Description</label>
+                <div class="border rounded-3 shadow-sm bg-white">
+                  <div class="d-flex gap-1 px-3 py-2 bg-light border-bottom">
+                    <button type="button" class="btn btn-sm btn-outline-secondary border-0 p-2"
+                      onclick="formatShortDesc('bold')"><i class="fas fa-bold"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary border-0 p-2"
+                      onclick="formatShortDesc('italic')"><i class="fas fa-italic"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary border-0 p-2"
+                      onclick="formatShortDesc('underline')"><i class="fas fa-underline"></i></button>
+                  </div>
+                  <div id="shortEditor"
+                    class="p-3 <%= (typeof errors !== 'undefined' && errors.shortDesc) ? 'is-invalid' : '' %>"
+                    contenteditable="true" style="min-height:100px;" oninput="updateShortDescTextarea()">
+                    <%= (typeof old !=='undefined' && old.shortDesc) ? old.shortDesc : (product.shortDesc || '' ) %>
+                  </div>
+                </div>
+                <textarea id="shortDescription" name="shortDesc" class="d-none">
+                  <%= (typeof old !== 'undefined' && old.shortDesc) ? old.shortDesc : (product.shortDesc || '') %>
+                </textarea>
+                <% if (typeof errors !=='undefined' && errors.shortDesc) { %>
+                  <div class="invalid-feedback d-block">
+                    <%= errors.shortDesc[0] %>
+                  </div>
+                  <% } %>
+                    <small class="text-muted"><span id="shortCharCount">0</span> characters</small>
+              </div>
+
+              <!-- Product Description -->
+              <div class="mb-4">
+                <label class="form-label fw-medium mb-2">Product Description</label>
+                <div class="border rounded-3 shadow-sm bg-white">
+                  <div class="d-flex gap-1 px-3 py-2 bg-light border-bottom">
+                    <button type="button" class="btn btn-sm btn-outline-secondary border-0 p-2"
+                      onclick="formatDoc('bold')"><i class="fas fa-bold"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary border-0 p-2"
+                      onclick="formatDoc('italic')"><i class="fas fa-italic"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary border-0 p-2"
+                      onclick="formatDoc('underline')"><i class="fas fa-underline"></i></button>
+                  </div>
+                  <div id="editor"
+                    class="p-3 <%= (typeof errors !== 'undefined' && errors.detailDesc) ? 'is-invalid' : '' %>"
+                    contenteditable="true" style="min-height:200px;" oninput="updateHiddenTextarea()">
+                    <%= (typeof old !=='undefined' && old.detailDesc) ? old.detailDesc : (product.detailDesc || '' ) %>
+                  </div>
+                </div>
+                <textarea id="description" name="detailDesc" class="d-none">
+                  <%= (typeof old !== 'undefined' && old.detailDesc) ? old.detailDesc : (product.detailDesc || '') %>
+                </textarea>
+                <% if (typeof errors !=='undefined' && errors.detailDesc) { %>
+                  <div class="invalid-feedback d-block">
+                    <%= errors.detailDesc[0] %>
+                  </div>
+                  <% } %>
+                    <small class="text-muted"><span id="charCount">0</span> characters</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right -->
+          <div class="col-lg-4">
+            <!-- Product Images -->
+            <div class="card p-3 mb-4">
+              <h5 class="mb-3"><i class="bi bi-image me-2 text-success"></i> Product Images</h5>
+            
+              <div class="upload-box" id="uploadBox">
+                <% if (product.image) { %>
+                  <!-- Ảnh cũ -->
+                  <div id="preview" class="upload-preview" style="display:block;">
+                    <img src="/images/product/<%= product.image %>" class="img-thumbnail w-100"
+                      style="max-height:250px; object-fit:cover;">
+                  </div>
+                  <div class="upload-placeholder" style="display:none;">
+                    <i class="bi bi-cloud-arrow-up fs-1 text-success"></i>
+                    <p class="mb-1">Click to upload or drag and drop</p>
+                  </div>
+                  <% } else { %>
+                    <!-- Nếu chưa có ảnh thì hiển thị khung upload -->
+                    <div id="preview" class="upload-preview"></div>
+                    <div class="upload-placeholder">
+                      <i class="bi bi-cloud-arrow-up fs-1 text-success"></i>
+                      <p class="mb-1">Click to upload or drag and drop</p>
+                    </div>
+                    <% } %>
+            
+                      <!-- Input file ẩn -->
+                      <input id="fileInput" name="image" type="file" accept=".png,.jpg,.jpeg" hidden>
+              </div>
+            </div>
+
+            <!-- Inventory -->
+            <div class="card p-3 mb-4">
+              <h5 class="mb-3"><i class="bi bi-box-seam me-2 text-success"></i> Inventory</h5>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Factory</label>
+                  <select class="form-select" name="factory">
+                    <% factoryOptions.forEach(function(factory){ %>
+                      <option value="<%= factory.value %>" <%=factory.value===product.factory ? 'selected' : '' %>>
+                        <%= factory.name %>
+                      </option>
+                      <% }); %>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Target</label>
+                  <select class="form-select" name="target">
+                    <% targetOptions.forEach(function(target){ %>
+                      <option value="<%= target.value %>" <%=target.value===product.target ? 'selected' : '' %>>
+                        <%= target.name %>
+                      </option>
+                      <% }); %>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Quantity</label>
+                  <input type="number" class="form-control" name="quantity"
+                    value="<%= (typeof old !== 'undefined' && old.quantity) ? old.quantity : (product.quantity || 0) %>">
+                </div>
+              </div>
+            </div>
+
+            <!-- Pricing -->
+            <div class="card p-3 mb-4">
+              <h5 class="mb-3"><i class="bi bi-currency-dollar me-2 text-success"></i> Pricing</h5>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Price</label>
+                  <input type="text" class="form-control" id="price" name="price"
+                    value="<%= (typeof old !== 'undefined' && old.price) ? old.price : (product.price || '') %>"
+                    placeholder="0,000">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Discount</label>
+                  <input type="text" class="form-control" id="discount" name="discount"
+                    value="<%= (typeof old !== 'undefined' && old.discount) ? old.discount : (product.discount || '') %>"
+                    placeholder="0,000">
+                </div>
+              </div>
+              <div class="d-flex justify-content-end gap-2 pt-3 mt-3">
+                <button type="button" class="btn btn-outline-secondary px-4" onclick="window.location.href='/admin/product'">
+                  <i class="bi bi-x-circle me-1"></i> Discard
+                </button>
+                <button type="submit" class="btn btn-primary px-4">
+                  <i class="bi bi-plus-circle me-1"></i> Update Product
+                </button>
+              </div>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+     // ---- Short description ----
+      function formatShortDesc(cmd, val = null) {
+        document.execCommand(cmd, false, val);
+        updateShortDescTextarea();
+      }
+      function updateShortDescTextarea() {
+        const editor = document.getElementById("shortEditor");
+        document.getElementById("shortDescription").value = editor.innerHTML.trim();
+        document.getElementById("shortCharCount").textContent = editor.innerText.trim().length;
+      }
+
+      // ---- Full description ----
+      function formatDoc(cmd, val = null) {
+        document.execCommand(cmd, false, val);
+        updateHiddenTextarea();
+      }
+      function updateHiddenTextarea() {
+        const editor = document.getElementById("editor");
+        document.getElementById("description").value = editor.innerHTML.trim();
+        document.getElementById("charCount").textContent = editor.innerText.trim().length;
+      }
+
+      // ---- Image Upload ----
+      function previewImage(event) {
+        const preview = document.getElementById('preview');
+        preview.innerHTML = '';
+        const file = event.target.files[0];
+        if (file) {
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          img.className = 'img-thumbnail shadow-sm w-100';
+          img.style.maxHeight = '250px';
+          img.style.objectFit = 'cover';
+          preview.appendChild(img);
+        }
+      }
+
+      // ---- Gọi khi trang load ----
+      document.addEventListener("DOMContentLoaded", () => {
+        updateShortDescTextarea();
+        updateHiddenTextarea();
+      });
+
+    // ---- Image Upload (click + drag & drop) ----
+    document.addEventListener("DOMContentLoaded", () => {
+        const uploadBox = document.getElementById("uploadBox");
+        const fileInput = document.getElementById("fileInput");
+        const placeholder = uploadBox.querySelector(".upload-placeholder");
+        const preview = uploadBox.querySelector(".upload-preview");
+
+        function displayImage(file) {
+          preview.innerHTML = "";
+          if (file && file.type.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.onload = e => {
+              const img = document.createElement("img");
+              img.src = e.target.result;
+              img.className = "img-thumbnail w-100";
+              img.style.maxHeight = "250px";
+              img.style.objectFit = "cover";
+              preview.appendChild(img);
+              placeholder.style.display = "none";
+              preview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+          }
+        }
+
+        // Click vào box (kể cả ảnh cũ) => mở file chọn ảnh
+        uploadBox.addEventListener("click", () => fileInput.click());
+
+        fileInput.addEventListener("change", e => displayImage(e.target.files[0]));
+
+        // Drag & Drop
+        uploadBox.addEventListener("dragover", e => {
+          e.preventDefault();
+          uploadBox.classList.add("dragover");
+        });
+        uploadBox.addEventListener("dragleave", e => {
+          e.preventDefault();
+          uploadBox.classList.remove("dragover");
+        });
+        uploadBox.addEventListener("drop", e => {
+          e.preventDefault();
+          uploadBox.classList.remove("dragover");
+          if (e.dataTransfer.files.length > 0) {
+            fileInput.files = e.dataTransfer.files;
+            displayImage(e.dataTransfer.files[0]);
+          }
+        });
+    });
+  </script>
+</body>
+
+</html>

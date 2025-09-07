@@ -9,7 +9,7 @@ const getEditUsers = async (req: Request, res: Response) => {
     return res.redirect('/admin/user');
   }
   const roles = await getAllRole();
-  return res.render("pages/admin/User/detail.ejs", {
+  return res.render("pages/admin/User/edit.ejs", {
     user: user,
     roles,
     layout: 'layouts/adminLayout'
@@ -28,7 +28,7 @@ const postUpdateUser = async (req:Request , res:Response)=>{
 
   if (isPasswordMatch === false) {
     const roles = await getAllRole();
-    return res.render("pages/admin/User/detail.ejs", {
+    return res.render("pages/admin/User/edit.ejs", {
       user, roles, check_password: isPasswordMatch // Biến này sẽ là true, false, hoặc null
       ,layout: 'layouts/adminLayout'
   });

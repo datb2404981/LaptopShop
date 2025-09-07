@@ -8,6 +8,7 @@ CREATE TABLE `users` (
     `phone` VARCHAR(255) NOT NULL,
     `accountType` VARCHAR(255) NOT NULL,
     `avatar` VARCHAR(255) NOT NULL,
+    `roleId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -35,13 +36,17 @@ CREATE TABLE `products` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
     `price` INTEGER NOT NULL,
-    `image` VARCHAR(255) NOT NULL,
+    `discount` INTEGER NULL DEFAULT 0,
+    `image` VARCHAR(255) NULL,
     `detailDesc` VARCHAR(255) NOT NULL,
     `shortDesc` VARCHAR(255) NOT NULL,
     `quantity` INTEGER NOT NULL,
-    `sold` INTEGER NOT NULL,
+    `sold` INTEGER NULL DEFAULT 0,
     `factory` VARCHAR(255) NOT NULL,
     `target` VARCHAR(255) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `users` ADD CONSTRAINT `users_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `roles`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

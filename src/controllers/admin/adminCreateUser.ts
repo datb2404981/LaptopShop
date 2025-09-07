@@ -1,4 +1,4 @@
-import { Identifier } from './../../node_modules/acorn/dist/acorn.d';
+import { Identifier } from 'acorn';
 import { Request, Response } from "express";
 import { handCreateUsers,handDeleteUsers,getUser, getAllRole } from "services/users";
 

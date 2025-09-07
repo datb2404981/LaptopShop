@@ -7,23 +7,10 @@
   <title>Create Product</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a2d9d6c8c4.js" crossorigin="anonymous"></script>
   <style>
     body {
       background-color: #f8f9fa;
-    }
-
-    .sidebar {
-      width: 240px;
-      background: #fff;
-      min-height: 100vh;
-      border-right: 1px solid #dee2e6;
-      padding: 1rem;
-    }
-
-    .sidebar .nav-link.active {
-      background-color: #0d6efd;
-      color: #fff;
-      border-radius: 0.5rem;
     }
 
     .content {
@@ -37,137 +24,280 @@
     textarea {
       resize: none;
     }
+
+    .upload-box {
+      border: 2px dashed #dee2e6;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      background: #f8f9fa;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upload-box.dragover {
+      border-color: #0d6efd;
+      background: #eef5ff;
+    }
+
+    .upload-box input[type="file"] {
+      display: none;
+    }
+
+    .upload-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+    }
+
+    .upload-preview {
+      width: 100%;
+      display: none;
+    }
+
+    .upload-preview img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+      max-height: 500px;
+    }
   </style>
 </head>
 
 <body>
   <div class="d-flex">
-    <!-- Content -->
     <div class="content flex-grow-1">
       <h4 class="mb-4">Add New Product</h4>
 
-      <div class="row g-4">
-        <!-- Left side -->
+      <form action="/admin/product/create" method="post" enctype="multipart/form-data">
+        <div class="row g-4">
+        <!-- Left -->
         <div class="col-lg-8">
-          <!-- Description -->
-          <div class="card p-3 mb-4">
-            <h5>Description</h5>
+          <div class="card p-3 h-100">
+            <h5 class="mb-3">
+              <i class="bi bi-card-text me-2 text-success"></i> Description
+            </h5>
             <div class="mb-3">
               <label class="form-label">Product Name</label>
-              <input type="text" class="form-control" placeholder="Enter product name">
+              <input type="text" class="form-control <%= (typeof errors !== 'undefined' && errors.name) ? 'is-invalid' : '' %>" placeholder="Enter product name" name="name" value="<%= (typeof old !== 'undefined') ? old.name : '' %>">
+              <% if (typeof errors !== 'undefined' && errors.name) { %>
+                <div class="invalid-feedback">
+                  <%= errors.name[0] %>
+                </div>
+              <% } %>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Business Description</label>
-              <textarea class="form-control" rows="4" placeholder="Enter product description"></textarea>
+
+            <!-- Short Description -->
+            <div class="mb-4">
+              <label class="form-label fw-medium mb-2">Short Description</label>
+              <div class="border rounded-3 shadow-sm bg-white">
+                <div class="d-flex gap-1 px-3 py-2 bg-light border-bottom">
+                  <button type="button" class="btn btn-sm btn-outline-secondary border-0 p-2"
+                    onclick="formatShortDesc('bold')"><i class="fas fa-bold"></i></button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary border-0 p-2"
+                    onclick="formatShortDesc('italic')"><i class="fas fa-italic"></i></button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary border-0 p-2"
+                    onclick="formatShortDesc('underline')"><i class="fas fa-underline"></i></button>
+                </div>
+                <div id="shortEditor" class="p-3 <%= (typeof errors !== 'undefined' && errors.shortDesc) ? 'is-invalid' : '' %>" contenteditable="true" style="min-height:100px;"
+                  placeholder="Write a brief product description..." oninput="updateShortDescTextarea()"><%= (typeof old !== 'undefined') ? old.shortDesc : '' %></div>
+              </div>
+              <textarea id="shortDescription" name="shortDesc" class="d-none"></textarea>
+              <% if (typeof errors !== 'undefined' && errors.shortDesc) { %>
+                <div class="invalid-feedback d-block">
+                  <%= errors.shortDesc[0] %>
+                </div>
+              <% } %>
+              <small class="text-muted"><span id="shortCharCount">0</span> characters</small>
+            </div>
+
+            <!-- Product Description -->
+            <div class="mb-4">
+              <label class="form-label fw-medium mb-2">Product Description</label>
+              <div class="border rounded-3 shadow-sm bg-white">
+                <div class="d-flex gap-1 px-3 py-2 bg-light border-bottom">
+                  <button type="button" class="btn btn-sm btn-outline-secondary border-0 p-2"
+                    onclick="formatDoc('bold')"><i class="fas fa-bold"></i></button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary border-0 p-2"
+                    onclick="formatDoc('italic')"><i class="fas fa-italic"></i></button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary border-0 p-2"
+                    onclick="formatDoc('underline')"><i class="fas fa-underline"></i></button>
+                </div>
+                <div id="editor" class="p-3 <%= (typeof errors !== 'undefined' && errors.detailDesc) ? 'is-invalid' : '' %>" contenteditable="true" style="min-height:200px;"
+                  placeholder="Write details..." oninput="updateHiddenTextarea()"><%= (typeof old !== 'undefined') ? old.detailDesc : '' %></div>
+              </div>
+              <textarea id="description" name="detailDesc" class="d-none"></textarea>
+               <% if (typeof errors !== 'undefined' && errors.detailDesc) { %>
+                <div class="invalid-feedback d-block">
+                  <%= errors.detailDesc[0] %>
+                </div>
+              <% } %>
+              <small class="text-muted"><span id="charCount">0</span> characters</small>
             </div>
           </div>
+        </div>
 
-          <!-- Category -->
+        <!-- Right -->
+        <div class="col-lg-4">
+          <!-- Images -->
           <div class="card p-3 mb-4">
-            <h5>Category</h5>
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Product Category</label>
-                <select class="form-select">
-                  <option>Health & Medicine</option>
-                  <option>Beauty</option>
-                  <option>Electronics</option>
-                </select>
+            <h5 class="mb-3"><i class="bi bi-image me-2 text-success"></i> Product Images</h5>
+            <div class="upload-box">
+              <div class="upload-placeholder">
+                <i class="bi bi-cloud-arrow-up fs-1 text-success"></i>
+                <p class="mb-1">Click to upload or drag and drop</p>
               </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Sub Category</label>
-                <select class="form-select">
-                  <option>Beauty</option>
-                  <option>Skincare</option>
-                </select>
-              </div>
+              <div class="upload-preview" id="preview"></div>
+              <input name="image" type="file" accept=".png,.jpg,.jpeg">
             </div>
           </div>
 
           <!-- Inventory -->
           <div class="card p-3 mb-4">
-            <h5>Inventory</h5>
-            <div class="row">
-              <div class="col-md-6 mb-3">
+            <h5 class="mb-3"><i class="bi bi-box-seam me-2 text-success"></i> Inventory</h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Factory</label>
+                <select class="form-select <%= (typeof errors !== 'undefined' && errors.factory) ? 'is-invalid' : '' %>" name="factory">
+                  <option value="APPlE">Apple</option>
+                  <option value="ASUS">Asus</option>
+                  <option value="LENOVO">Lenovo</option>
+                  <option value="DELL">Dell</option>
+                  <option value="LG">LG</option>
+                  <option value="ACER">Acer</option>
+                </select>
+                 <% if (typeof errors !== 'undefined' && errors.factory) { %>
+                  <div class="invalid-feedback">
+                    <%= errors.factory[0] %>
+                  </div>
+                <% } %>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Target</label>
+                <select class="form-select <%= (typeof errors !== 'undefined' && errors.target) ? 'is-invalid' : '' %>" name="target">
+                  <option value="GAMING">Gaming</option>
+                  <option value="SINHVIEN-VANPHONG">Office</option>
+                  <option value="THIET-KE-DO-HOA">Design</option>
+                  <option value="MONG-NHE">Lightweight</option>
+                  <option value="DOANH-NHAN">Business</option>
+                </select>
+                 <% if (typeof errors !== 'undefined' && errors.target) { %>
+                  <div class="invalid-feedback">
+                    <%= errors.target[0] %>
+                  </div>
+                <% } %>
+              </div>
+              <div class="col-12">
                 <label class="form-label">Quantity</label>
-                <input type="number" class="form-control" value="0">
+                <input type="number" class="form-control <%= (typeof errors !== 'undefined' && errors.quantity) ? 'is-invalid' : '' %>" name="quantity" value="<%= (typeof old !== 'undefined') ? old.quantity : 0 %>">
+                 <% if (typeof errors !== 'undefined' && errors.quantity) { %>
+                  <div class="invalid-feedback">
+                    <%= errors.quantity[0] %>
+                  </div>
+                <% } %>
               </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label">SKU (Optional)</label>
-                <input type="text" class="form-control" placeholder="SKU code">
-              </div>
-            </div>
-          </div>
-
-          <!-- Selling Type -->
-          <div class="card p-3 mb-4">
-            <h5>Selling Type</h5>
-            <div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="sellingType" id="inStore">
-                <label class="form-check-label" for="inStore">In-store selling only</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="sellingType" id="online">
-                <label class="form-check-label" for="online">Online selling only</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="sellingType" id="both">
-                <label class="form-check-label" for="both">Both in-store and online</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right side -->
-        <div class="col-lg-4">
-          <!-- Product Images -->
-          <div class="card p-3 mb-4">
-            <h5>Product Images</h5>
-            <div class="border rounded p-3 text-center bg-light" style="cursor:pointer;">
-              <i class="bi bi-cloud-arrow-up fs-2"></i>
-              <p class="mb-0">Click to upload or drag and drop</p>
-            </div>
-          </div>
-
-          <!-- Shipping -->
-          <div class="card p-3 mb-4">
-            <h5>Shipping and Delivery</h5>
-            <div class="mb-3">
-              <label class="form-label">Item Weight (kg)</label>
-              <input type="number" class="form-control" placeholder="0">
-            </div>
-            <div class="row">
-              <div class="col"><input type="number" class="form-control" placeholder="Length"></div>
-              <div class="col"><input type="number" class="form-control" placeholder="Breadth"></div>
-              <div class="col"><input type="number" class="form-control" placeholder="Width"></div>
             </div>
           </div>
 
           <!-- Pricing -->
           <div class="card p-3 mb-4">
-            <h5>Pricing</h5>
-            <div class="mb-3">
-              <label class="form-label">Price</label>
-              <input type="number" class="form-control" placeholder="0.00">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Compare at Price</label>
-              <input type="number" class="form-control" placeholder="0.00">
-            </div>
-            <div class="d-flex justify-content-between">
-              <button class="btn btn-outline-secondary">Discard</button>
-              <div>
-                <button class="btn btn-outline-primary me-2">Schedule</button>
-                <button class="btn btn-primary">Add Product</button>
+            <h5 class="mb-3"><i class="bi bi-currency-dollar me-2 text-success"></i> Pricing</h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Price</label>
+                <input type="text" class="form-control <%= (typeof errors !== 'undefined' && errors.price) ? 'is-invalid' : '' %>" id="price" placeholder="0,000" name="price" value="<%= (typeof old !== 'undefined') ? old.price : '' %>">
+                 <% if (typeof errors !== 'undefined' && errors.price) { %>
+                  <div class="invalid-feedback">
+                    <%= errors.price[0] %>
+                  </div>
+                <% } %>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Discount </label>
+                <input type="text" class="form-control" id="discount" placeholder="0,000" name="discount" value="<%= (typeof old !== 'undefined') ? old.discount : '' %>">
               </div>
             </div>
+            <!-- Actions -->
+            <div class="d-flex justify-content-end align-items-center gap-2 pt-3 mt-3"> <button
+                class="btn btn-outline-secondary px-4"> <i class="bi bi-x-circle me-1"></i> Discard </button> 
+                <button class="btn btn-primary px-4"> <i class="bi bi-plus-circle me-1"></i> Add Product </button> 
+            </div>
+
           </div>
         </div>
-      </div>
+      </form>
 
     </div>
   </div>
+
+  <script>
+    // ---- Short description ----
+    function formatShortDesc(cmd, val = null) {
+      document.execCommand(cmd, false, val);
+      updateShortDescTextarea();
+    }
+    function updateShortDescTextarea() {
+      const editor = document.getElementById("shortEditor");
+      document.getElementById("shortDescription").value = editor.innerHTML;
+      document.getElementById("shortCharCount").textContent = editor.innerText.length;
+    }
+
+    // ---- Full description ----
+    function formatDoc(cmd, val = null) {
+      document.execCommand(cmd, false, val);
+      updateHiddenTextarea();
+    }
+    function updateHiddenTextarea() {
+      const editor = document.getElementById("editor");
+      document.getElementById("description").value = editor.innerHTML;
+      document.getElementById("charCount").textContent = editor.innerText.length;
+    }
+
+    // ---- Image Upload ----
+    document.addEventListener("DOMContentLoaded", () => {
+      const uploadBox = document.querySelector(".upload-box");
+      const fileInput = uploadBox.querySelector('input[type="file"]');
+      const placeholder = uploadBox.querySelector(".upload-placeholder");
+      const preview = uploadBox.querySelector("#preview");
+
+      function displayImage(file) {
+        preview.innerHTML = "";
+        if (file && file.type.startsWith("image/")) {
+          const reader = new FileReader();
+          reader.onload = e => {
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            preview.appendChild(img);
+            placeholder.style.display = "none";
+            preview.style.display = "block";
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      uploadBox.addEventListener("click", () => fileInput.click());
+      fileInput.addEventListener("change", e => displayImage(e.target.files[0]));
+      uploadBox.addEventListener("dragover", e => { e.preventDefault(); uploadBox.classList.add("dragover"); });
+      uploadBox.addEventListener("dragleave", e => { e.preventDefault(); uploadBox.classList.remove("dragover"); });
+      uploadBox.addEventListener("drop", e => {
+        e.preventDefault();
+        uploadBox.classList.remove("dragover");
+        if (e.dataTransfer.files.length > 0) displayImage(e.dataTransfer.files[0]);
+      });
+    });
+    document.getElementById("price").addEventListener("input", function () { formatNumber(this) });
+    document.getElementById("discount").addEventListener("input", function () { formatNumber(this) });
+  </script>
 </body>
 
 </html>
