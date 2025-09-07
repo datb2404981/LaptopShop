@@ -4,9 +4,11 @@ import WebRouters from "./routers/web";
 import * as path from "path";
 import expressLayouts from 'express-ejs-layouts';
 import mysql from 'mysql2/promise';
-import  {initDatabase } from "config/seed";
-
+import initDatabase from "config/seed";
+import passport from "passport";
 import { getConnection } from "config/database";
+import configPassportLocal from "middleware/passport.local";
+import session from "express-session";
 
 const app = express();
 const port = process.env.PORT;
@@ -35,6 +37,18 @@ app.use((req, res, next) => {
 //config static files: images/css/js
 app.use(express.static('public'));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+//config session
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}));
+
+//config passport 
+app.use(passport.initialize());
+app.use(passport.authenticate('session'));
+configPassportLocal();
 
 //config routers
 WebRouters(app);

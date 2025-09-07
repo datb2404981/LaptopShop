@@ -7,10 +7,12 @@ const getHomePage =  async (req: Request, res: Response) => {
 }
 
 const getLoginPage = async (req: Request, res: Response) => {
-  return res.render('pages/client/account/login.ejs', { layout: false });
+  const { session } = req as any;
+  const messages = session?.messages ?? [];
+  return res.render('pages/client/account/login.ejs', { layout: false,messages });
 }
 
 const getSignupPage = async (req: Request, res: Response) => {
   return res.render('pages/client/account/signup.ejs', { layout: false });
 }
-export{getHomePage,getLoginPage,getSignupPage}
+export{getHomePage,getLoginPage,getSignupPage} 
