@@ -81,6 +81,10 @@ WebRouters(app);
 //seeding data
 //initDatabase();
 
+app.use((req, res) => {
+  res.render("status/404.ejs",{layout: false}); 
+})
+
 app.listen(port, () => {
   console.log(`My server is http://localhost:${port}`);
 });  

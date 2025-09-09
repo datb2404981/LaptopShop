@@ -11,59 +11,65 @@ import {
   getAdminCreateProductPage, postAdminCreateProductPage,
   getEditProducts, postUpdateProduct, postDeleteProductPage
 } from "controllers/admin/adminProduct";
-import { postSignupPage } from "controllers/client/clientAuth";
+import { getSuccessRedirectPage, postLogOut, postSignupPage } from "controllers/client/clientAuth";
 import passport from "passport";
+import { isLoginAdmin, isLoginUser } from "middleware/auth";
 
 
-const router = express.Router();
+const clientRouter = express.Router();
+const adminRouter = express.Router();
 const upload = multer({ dest: 'uploads/' })
 
 const WebRouters = (app : Express) => {
 
-
-  // Admin 
-  router.get('/admin/dashboard', getAdmin);
-  
+  // ================= ADMIN ROUTES =================
+  //Admin/dashboard
+  adminRouter.get('/dashboard', getAdmin);
   //Admin/user
-  router.get('/admin/create', getCreateUserPage);
-  router.post('/admin/create', fileUploadMiddleware('avatar',"images/client"), postCreateUserPage);
-  router.post('/admin/deleteUser/:id', postDeleteUserPage );
-  router.get('/admin/editUser/:id', getEditUsers);
-  router.post('/admin/updateUser', fileUploadMiddleware('avatar',"images/client"), postUpdateUser);
-  router.get('/admin/user', getUser);
+  adminRouter.get('/create', getCreateUserPage);
+  adminRouter.post('/create', fileUploadMiddleware('avatar',"images/client"), postCreateUserPage);
+  adminRouter.post('/deleteUser/:id', postDeleteUserPage );
+  adminRouter.get('/editUser/:id', getEditUsers);
+  adminRouter.post('/updateUser', fileUploadMiddleware('avatar',"images/client"), postUpdateUser);
+  adminRouter.get('/user', getUser);
   
   //Admin/product
-  router.get('/admin/product/create', getAdminCreateProductPage); // Controller does not exist
-  router.post('/admin/product/create', fileUploadMiddleware('image', "images/product"), postAdminCreateProductPage); // Wrong controller
-  router.get('/admin/product/editProduct/:id', getEditProducts);
-  router.post('/admin/product/updateProduct', fileUploadMiddleware('image', "images/product"), postUpdateProduct);
-  router.post('/admin/product/deleteProduct/:id', postDeleteProductPage );
-  router.get('/admin/product', getProduct);
+  adminRouter.get('/product/create', getAdminCreateProductPage); // Controller does not exist
+  adminRouter.post('/product/create', fileUploadMiddleware('image', "images/product"), postAdminCreateProductPage); // Wrong controller
+  adminRouter.get('/product/editProduct/:id', getEditProducts);
+  adminRouter.post('/product/updateProduct', fileUploadMiddleware('image', "images/product"), postUpdateProduct);
+  adminRouter.post('/product/deleteProduct/:id', postDeleteProductPage );
+  adminRouter.get('/product', getProduct);
   
   //Admin/order
-  router.get('/admin/order', getOrder);
+  adminRouter.get('/order', getOrder);
   
-  //Admin
-  router.get('/admin', getAdmin);
+  //Admin/
+  adminRouter.get('/', getAdmin);
 
-  // Client 
-  router.get('/', getHomePage);
-  router.get('/login', getLoginPage);
-  router.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
+  //================= CLIENT ROUTES =================
+  
+  //Auth
+  clientRouter.get('/successRedirect', getSuccessRedirectPage)
+  clientRouter.get('/login', isLoginUser, getLoginPage);
+  clientRouter.post('/login', passport.authenticate('local', {
+    successRedirect: '/successRedirect',
     failureRedirect: '/login',
     failureMessage: true
   }));
+  clientRouter.post('/logout', postLogOut);
+  clientRouter.get('/signup',isLoginUser, getSignupPage);
+  clientRouter.post('/signup', postSignupPage);
 
-
-  router.get('/signup', getSignupPage);
-  router.post('/signup', postSignupPage);
   
 
   //Product
-  router.get('/product/:id', getProductPage);
+  clientRouter.get('/product/:id', getProductPage);
 
-  app.use('/', router);
+  //Home
+  clientRouter.get('/', getHomePage);
+  app.use('/admin',isLoginAdmin, adminRouter);
+  app.use('/', clientRouter);
 
 }
 

@@ -67,6 +67,7 @@ const getRole = async (id: string) => {
   return role;
 }
 
+
 const handDeleteUsers = async (id: string) => {
   const userDelete = await prisma.user.delete({
     where: {
