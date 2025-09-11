@@ -51,6 +51,7 @@ const WebRouters = (app : Express) => {
   
   //Auth
   clientRouter.get('/successRedirect', getSuccessRedirectPage)
+  //login system
   clientRouter.get('/login', isLoginUser, getLoginPage);
   clientRouter.post('/login', passport.authenticate('local', {
     successRedirect: '/successRedirect',
@@ -58,6 +59,16 @@ const WebRouters = (app : Express) => {
     failureMessage: true
   }));
   clientRouter.post('/logout', postLogOut);
+  
+  clientRouter.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile','email'] }));
+
+  clientRouter.get('/auth/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
   clientRouter.get('/signup',isLoginUser, getSignupPage);
   clientRouter.post('/signup', postSignupPage);
 

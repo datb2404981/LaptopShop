@@ -58,9 +58,9 @@ const handleLogin = async (username : string, password:string, cb: any) => {
   return cb(null, user);
 }
 
-const getUserWithRole  = async (id: string) => {
+const getUserWithRole  = async (id: number) => {
   const user = await prisma.user.findFirst({
-    where: { id: +id },
+    where: { id: id },
     include: { role: true },
     omit: {
       password:true
@@ -69,5 +69,37 @@ const getUserWithRole  = async (id: string) => {
   return user;
 }
 
+const handSignUp_Google = async (fullname:string,email:string) => {
+  const user = await prisma.user.findUnique({
+    where: {username : email},
+  })
+  if (!user) {
+    //sign up user
+    const userRole = await prisma.role.findFirst({
+    where: { name: "USER" }
+    });
 
-export { isEmailExist, handUserSignUp,handleLogin,getUserWithRole }
+    const newUser = await prisma.user.create({
+      data: {
+        fullname: fullname,
+      username: email,
+      password: "",
+      address: null,
+      phone: null,
+      avatar: null,
+      accountType: ACCOUNT_TYPE.GOOGLE,
+      role: {
+        connect: {
+          id: userRole.id
+        }
+      }
+      }
+    })
+    return newUser;
+  } else {
+    //log in user
+    return user;
+  }
+}
+
+export { isEmailExist, handUserSignUp,handleLogin,getUserWithRole,handSignUp_Google }

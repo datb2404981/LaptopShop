@@ -11,6 +11,7 @@ import configPassportLocal from "middleware/passport.local";
 import session from "express-session";
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import  { PrismaClient }  from '@prisma/client';
+import configPassportGoogle from "middleware/passport.google";
 
 const app = express();
 const port = process.env.PORT;
@@ -67,6 +68,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.authenticate('session'));
 configPassportLocal();
+configPassportGoogle();
 
 //config global
 app.use((req, res, next) => {

@@ -15,16 +15,16 @@ const configPassportLocal = () => {
   }));
 
   passport.serializeUser(function(user:any, cb) {
-      cb(null, { id: user.id, username: user.username });
-    
+    process.nextTick(function() {
+      cb(null, user.id);
+    });
   });
 
-  passport.deserializeUser(async function (user:any, cb) {
-    const { id, username } = user;
-    //query to database
-    const userInDB = await getUserWithRole(id)
-    return cb(null, userInDB);
-    
+  passport.deserializeUser(async function (id: number, cb) {
+    process.nextTick(async function() {
+      const userInDB = await getUserWithRole(id);
+      return cb(null, userInDB);
+    });
   });
 }
 
