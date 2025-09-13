@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { authSchema, TAuthSchema } from "src/validate/auth.schema";
 import { handUserSignUp } from "services/auth";
 
-const postSignupPage = async (req: Request, res: Response) => { 
+const postSignupPage = async (req: Request, res: Response,next: NextFunction) => { 
   const { fullname, email, password } = req.body as TAuthSchema;
   const validate = await authSchema.safeParseAsync(req.body);
 
@@ -15,8 +15,17 @@ const postSignupPage = async (req: Request, res: Response) => {
     });
   }
 
-  await handUserSignUp( fullname, email, password);
-  return res.redirect('/');
+  try {
+    const newUser = await handUserSignUp(fullname, email, password);
+
+    // login user vừa sign up
+    req.logIn(newUser, (err) => {
+      if (err) return next(err);
+      return res.redirect('/');
+    });
+  } catch (err) {
+    return next(err);
+  }
 }
 
 const getSuccessRedirectPage = async (req: Request, res: Response) => {

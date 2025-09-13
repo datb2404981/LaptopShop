@@ -1,12 +1,12 @@
 import express, { Express } from "express";
-import { getHomePage,getLoginPage,getSignupPage } from "controllers/client/user";
+import { getCart, getHomePage,getLoginPage,getSignupPage } from "controllers/client/user";
 import { getCreateUserPage, postCreateUserPage, postDeleteUserPage }
   from "controllers/admin/adminCreateUser";
 import { getEditUsers,postUpdateUser } from "controllers/admin/adminUser";
 import { getAdmin, getUser, getProduct, getOrder } from "controllers/admin/admin";
 import multer from "multer";
 import fileUploadMiddleware from "middleware/multer";
-import { getProductPage } from "controllers/client/clientProduct";
+import { getProductPage, postAddCart, postDeleteProductToCart } from "controllers/client/clientProduct";
 import {
   getAdminCreateProductPage, postAdminCreateProductPage,
   getEditProducts, postUpdateProduct, postDeleteProductPage
@@ -59,22 +59,25 @@ const WebRouters = (app : Express) => {
     failureMessage: true
   }));
   clientRouter.post('/logout', postLogOut);
-  
+  //login google
   clientRouter.get('/auth/google',
     passport.authenticate('google', { scope: ['profile','email'] }));
-
   clientRouter.get('/auth/google/callback', 
     passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/');
-  });
+    });
+  //sign up
   clientRouter.get('/signup',isLoginUser, getSignupPage);
   clientRouter.post('/signup', postSignupPage);
 
-  
+  //cart
+  clientRouter.get('/cart', getCart);
+  clientRouter.post("/cart/deleteProduct", postDeleteProductToCart);
 
   //Product
+  clientRouter.post('/appProductToCart', postAddCart);
   clientRouter.get('/product/:id', getProductPage);
 
   //Home

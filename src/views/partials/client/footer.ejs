@@ -1,72 +1,93 @@
 <style>
-  a {
+  /* Footer chính */
+.footer {
+  background: #1f1f1f;
+  color: #ccc;
+  padding: 40px 0 20px; /* giảm bớt padding */
+  font-size: 14px; /* chữ nhỏ hơn */
+  line-height: 1.6;
+}
+
+.footer h4 {
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.footer p,
+.footer a {
+  font-size: 14px;
+  color: #bbb;
+  margin-bottom: 8px;
+  transition: color 0.3s;
+}
+
+.footer a:hover {
+  color: #7CB342; /* xanh lá nhấn mạnh */
   text-decoration: none;
 }
-.text-success {
-  color: #7CB342 !important;
+
+.footer .footer-item {
+  margin-bottom: 20px;
 }
+
+.footer img {
+  max-width: 120px;
+  margin-top: 10px;
+}
+
+/* Copyright */
+.copyright {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 13px;
+  color: #aaa;
+}
+
+.copyright a {
+  color: #7CB342;
+}
+
+.copyright a:hover {
+  color: #5a9b2f;
+}
+a { text-decoration: none; } .text-success { color: #7CB342 !important; }
 </style>
 
-<div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
-  <div class="container py-5">
-    <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5) ;">
-      <div class="row g-4">
-        <div class="col-lg-3">
-          <a href="#">
-            <h1 class="text-success mb-0">LaptopShop</h1>
-            <p class="text-warning mb-0">@3Đẹt</p>
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="row g-5">
+<div class="container-fluid bg-dark text-white-50 footer">
+  <div class="container">
+    <div class="row g-4">
       <div class="col-lg-3 col-md-6">
-        <div class="footer-item">
-          <h4 class="text-light mb-3">Chất lượng là ưu tiên hàng đầu</h4>
-        </div>
+        <a href="#">
+          <h1 class="text-success mb-1">LaptopShop</h1>
+          <p class="text-warning">@3Đẹt</p>
+        </a>
+        <p>Chất lượng là ưu tiên hàng đầu</p>
       </div>
-      <div class="col-lg-3 col-md-6">
-        <div class="d-flex flex-column text-start footer-item">
-          <h4 class="text-light mb-3">Shop Info</h4>
-          <a class="btn-link" href="">About Us</a>
-        </div>
+      <div class="col-lg-3 col-md-6 footer-item">
+        <h4>Shop Info</h4>
+        <a href="">About Us</a>
       </div>
-      <div class="col-lg-3 col-md-6">
-        <div class="d-flex flex-column text-start footer-item">
-          <h4 class="text-light mb-3">Account</h4>
-          <a class="btn-link" href="">My Account</a>
-        </div>
+      <div class="col-lg-3 col-md-6 footer-item">
+        <h4>Account</h4>
+        <a href="">My Account</a>
       </div>
-      <div class="col-lg-3 col-md-6">
-        <div class="footer-item">
-          <h4 class="text-light mb-3">Contact</h4>
-          <p>Author: NGUYEN VAN DAT</p>
-          <p>Email: dat7092006@gmail.com</p>
-          <p>Phone: 0794266321</p>
-          <p>Payment Accepted</p>
-          <img src="client/img/payment.png" class="img-fluid" alt="">
-        </div>
+      <div class="col-lg-3 col-md-6 footer-item">
+        <h4>Contact</h4>
+        <p>Author: NGUYEN VAN DAT</p>
+        <p>Email: dat7092006@gmail.com</p>
+        <p>Phone: 0794266321</p>
+        <p>Payment Accepted</p>
+        <img src="client/img/payment.png" alt="">
       </div>
     </div>
   </div>
 </div>
 
-  <!-- Copyright Start -->
-  <div class="container-fluid copyright bg-dark py-4">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-          <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>NGUYEN VAN DAT</a>, All
-            right reserved.</span>
-        </div>
-        <div class="col-md-6 my-auto text-center text-md-end text-white">
-          <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
-          <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
-          <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-          Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a> Distributed By <a
-            class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
-        </div>
-      </div>
-    </div>
+<div class="container-fluid copyright bg-dark py-3">
+  <div class="container d-flex justify-content-between flex-wrap">
+    <span><i class="fas fa-copyright me-1"></i>NGUYEN VAN DAT, All right reserved.</span>
+    <span>Designed By <a href="https://htmlcodex.com">HTML Codex</a> | Distributed By <a
+        href="https://themewagon.com">ThemeWagon</a></span>
   </div>
-  <!-- Copyright End -->
+</div>

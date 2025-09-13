@@ -1,9 +1,57 @@
+<style>
+    .breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 8px 16px;
+  margin: 0 auto 20px;
+  max-width: 1100px;
+  background: transparent;
+  border-radius: 6px;
+}
+
+.breadcrumb-item {
+  font-size: 16px;
+  color: #2e7d32;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "›"; /* dấu ngăn cách */
+  padding: 0 8px;
+  color: #999;
+}
+
+.breadcrumb-item a {
+  text-decoration: none;
+  color: #6cc24a;
+  transition: 0.2s;
+}
+
+.breadcrumb-item a:hover {
+  text-decoration: underline;
+  color: #2e7d32;
+}
+
+.breadcrumb-item.active {
+  color: #555;
+  font-weight: 600;
+}
+</style>
+
 <body>
 
   <div class="py-5"> </div>
-
   <!-- Single Product Start -->
   <div class="container-fluid py-5 mt-5">
+    <!-- Breadcrumb -->
+    <div class="mb-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Chi Tiết Sản hẩm</li>
+        </ol>
+      </nav>
+    </div>
     <div class="container py-5">
       <div class="row g-4 mb-5">
         <div class="col-lg-8 col-xl-9">

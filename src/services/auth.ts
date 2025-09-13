@@ -69,6 +69,14 @@ const getUserWithRole  = async (id: number) => {
   return user;
 }
 
+const getUserWithSumCart  = async (id: number) => {
+  const user = await prisma.cart.findFirst({
+    where: { userId: id },
+  })
+  return user?.sumProduct ?? 0;
+}
+
+
 const handSignUp_Google = async (fullname:string,email:string) => {
   const user = await prisma.user.findUnique({
     where: {username : email},
@@ -102,4 +110,8 @@ const handSignUp_Google = async (fullname:string,email:string) => {
   }
 }
 
-export { isEmailExist, handUserSignUp,handleLogin,getUserWithRole,handSignUp_Google }
+export {
+  isEmailExist, handUserSignUp,
+  handleLogin, getUserWithRole,
+  handSignUp_Google,getUserWithSumCart
+}

@@ -1,4 +1,4 @@
-import { getUserWithRole, handleLogin } from 'services/auth';
+import { getUserWithRole, getUserWithSumCart, handleLogin } from 'services/auth';
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 
@@ -22,8 +22,9 @@ const configPassportLocal = () => {
 
   passport.deserializeUser(async function (id: number, cb) {
     process.nextTick(async function() {
-      const userInDB = await getUserWithRole(id);
-      return cb(null, userInDB);
+      const userInDB: any = await getUserWithRole(id);
+      const sumCart = await getUserWithSumCart(id);
+      return cb(null,{ ...userInDB,sumCart});
     });
   });
 }
