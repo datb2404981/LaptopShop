@@ -183,7 +183,26 @@ header {
   background: #5da44f;
 }
 
+/* =======================
+  FOOTER
+======================= */
+footer {
+  background: #1f1f1f;
+  color: #fff;
+  padding: 40px 20px;
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+}
 
+footer .footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
 /* ===== Breadcrumb ===== */
     .breadcrumb {
   display: flex;
@@ -394,6 +413,39 @@ header {
   font-size: 14px;
   color: #666; /* giá từng sản phẩm màu xám */
 }
+.checkout-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.receiver-info h4 {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.receiver-info .form-control {
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.summary-box h3 {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.bill-info {
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.bill-info h5 {
+  color: #2e7d32;
+  font-weight: 600;
+}
 
   </style>
 
@@ -403,7 +455,7 @@ header {
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Cart Details</li>
+        <li class="breadcrumb-item active" aria-current="page">Order Details</li>
       </ol>
     </nav>
   </div>
@@ -411,7 +463,7 @@ header {
   <div class="cart-page">
   <!-- Left side - My Cart -->
   <div class="cart-container">
-    <h2>My Cart (<%= cartdetail.length %>)</h2>
+    <h2>Order Details</h2>
 
     <% if(cartdetail.length === 0) { %>
       <p style="text-align:center; padding: 30px; color: gray;">
@@ -432,9 +484,7 @@ header {
             <p><%= item.product.shortDesc%></p>
           </div>
           <div class="item-actions">
-            <button class="qty-btn minus"> - </button>
             <input type="text" value="<%= item.quantity%>" readonly>
-            <button class="qty-btn plus">+</button>
           </div>
           <div class="item-price">
             <h3>
@@ -444,61 +494,126 @@ header {
               <%= new Intl.NumberFormat('vi-VN', {style: 'currency' , currency: 'VND' }).format(item.product.price) %>
             </p>
           </div>
-          <form action="/cart/deleteProduct" method="post">
-            <input type="hidden" name="productId" value="<%= item.product.id %>" />
-            <button class="btn-remove"><i class="bi bi-trash"></i></button>
-          </form>
         </div>
       <% }); %>
     <% } %>
+    <div class="bill-info mt-4 p-3 border rounded">
+      <h5 class="mb-3">Billing Information</h5>
+      <p><strong>Buyer:</strong> <%= user.fullname %></p>
+      <p><strong>Email:</strong> <%= user.username %></p>
+      <p><strong>Payment Method:</strong> Cash on Delivery</p>
+    </div>
+
   </div>
 
-  <!-- Right side - Payment Summary -->
+  <!-- Right side - Checkout Info + Payment Summary -->
   <% if(cartdetail.length > 0) { %>
-    <div class="summary-box">
-      <h3>Payment Summary</h3>
-      <div class="summary-row">
-        <span>Total</span>
-        <span><%= new Intl.NumberFormat('vi-VN', {style: 'currency' , currency: 'VND' }).format(totalPriceProduct) %></span>
-      </div>
-      <div class="summary-row">
-        <span>Discount</span>
-        <span class="discount">
-          <%= new Intl.NumberFormat('vi-VN', {style: 'currency' , currency: 'VND' }).format(totalDiscountProduct) %>
+    <div class="checkout-box">
+      
+      <!-- Receiver Info -->
+      <div class="card shadow-sm p-4 mb-4 receiver-info">
+  <h4 class="mb-3">Receiver Information</h4>
+  <form action="/placeCheckout" method="post">
+    <input type="hidden" name="totalPrice" value="<%= totalPriceProduct - totalDiscountProduct %>">
+    <!-- Full Name -->
+    <div class="mb-3">
+      <label for="receiverName" class="form-label">Full Name</label>
+      <div class="input-group">
+        <span class="input-group-text bg-light">
+          <i class="bi bi-person-fill text-success"></i>
         </span>
+        <input
+          type="text"
+          id="receiverName"
+          name="receiverName"
+          class="form-control"
+          placeholder="Enter full name"
+          required
+        />
       </div>
-      <hr>
-      <div class="summary-total">
-        <span>Total</span>
-        <span><%= new Intl.NumberFormat('vi-VN', {style: 'currency' , currency: 'VND' }).format(totalPriceProduct - totalDiscountProduct) %></span>
+    </div>
+
+    <!-- Address -->
+    <div class="mb-3">
+      <label for="receiverAddress" class="form-label">Address</label>
+      <div class="input-group">
+        <span class="input-group-text bg-light">
+          <i class="bi bi-geo-alt-fill text-success"></i>
+        </span>
+        <input
+          type="text"
+          id="receiverAddress"
+          name="receiverAddress"
+          class="form-control"
+          placeholder="Enter delivery address"
+          required
+        />
       </div>
-      <form action="/confirmCart" method="post">
-        <div style="display: block">
+    </div>
 
-    <% cartdetail.forEach( function (item, index) { %>
-          <div class="mb-3">
-          <div class="form-group" style="display:none;">
-          <label>Id:</label>
-          <input class="form-control" type="text" value="<%=item.product.id %>"
-          readonly  data-cart-detail-index="<%= index %>"
-          name="cartDetails[<%= index %>][id]" />
-          </div>
-          <div class="form-group" style="display:none;">
-          <label>Quantity:</label>
-          <input class="form-control" type="text"
-          value="<%=item.quantity %>"
-          name="cartDetails[<%= index %>][quantity]"
-          id="cartDetails[<%= index %>]" />
-          </div>
-          </div>
-      <% }) %>
+    <!-- Phone Number -->
+    <div class="mb-3">
+      <label for="receiverPhone" class="form-label">Phone Number</label>
+      <div class="input-group">
+        <span class="input-group-text bg-light">
+          <i class="bi bi-telephone-fill text-success"></i>
+        </span>
+        <input
+          type="tel"
+          id="receiverPhone"
+          name="receiverPhone"
+          class="form-control"
+          placeholder="Enter phone number"
+          pattern="[0-9]{10,11}"
+          required
+        />
+      </div>
+    </div>
+</div>
 
-          </div>
-
-        <button class="checkout-btn">PLACE ORDER</button>
-      </form>
+      <!-- Payment Summary -->
+      <div class="summary-box">
+        <h3>Order Summary</h3>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>
+            <%= new Intl.NumberFormat('vi-VN', {style: 'currency' , currency: 'VND' }).format(totalPriceProduct) %>
+          </span>
+        </div>
+        <div class="summary-row">
+          <span>Discount</span>
+          <span class="discount">
+            <%= new Intl.NumberFormat('vi-VN', {style: 'currency' , currency: 'VND' }).format(totalDiscountProduct) %>
+          </span>
+        </div>
+        <div class="summary-row">
+          <span>Payment Method</span>
+          <span class="Cash on Delivery">Cash on Delivery (COD)</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span class="free">Free</span>
+        </div>
+        <hr>
+        <div class="summary-total">
+          <span>Total</span>
+          <span>
+            <%= new Intl.NumberFormat('vi-VN', {style: 'currency' , currency: 'VND' }).format(totalPriceProduct - totalDiscountProduct) %>
+          </span>
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+          <a href="/cart" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Cart
+          </a> 
+          <button type="submit" class="btn btn-success">
+            Confirm Order
+          </button>
+        </div>
+      </div>
+</form>
     </div>
   <% } %>
+
 </div>
 
 
@@ -540,40 +655,27 @@ header {
   }
 
   // Xử lý khi tăng giảm
-document.querySelectorAll(".cart-item").forEach((item, index) => {
-  const minusBtn = item.querySelector(".qty-btn.minus");
-  const plusBtn = item.querySelector(".qty-btn.plus");
-  const input = item.querySelector("input[type='text']");
+  document.querySelectorAll(".cart-item").forEach(item => {
+    const minusBtn = item.querySelector(".qty-btn.minus");
+    const plusBtn = item.querySelector(".qty-btn.plus");
+    const input = item.querySelector("input");
 
-  minusBtn.addEventListener("click", () => {
-    let val = parseInt(input.value);
-    if (val > 1) {
-      val = val - 1;
-      input.value = val;
+    minusBtn.addEventListener("click", () => {
+      let val = parseInt(input.value);
+      if (val > 1) {
+        input.value = val - 1;
+        updateSummary();
+      }
+    });
 
-      // cập nhật input hidden theo index
-      const hiddenInput = document.getElementById(`cartDetails[${index}]`);
-      if (hiddenInput) hiddenInput.value = val;
-
+    plusBtn.addEventListener("click", () => {
+      let val = parseInt(input.value);
+      input.value = val + 1;
       updateSummary();
-    }
+    });
   });
 
-  plusBtn.addEventListener("click", () => {
-    let val = parseInt(input.value);
-    val = val + 1;
-    input.value = val;
-
-    // cập nhật input hidden theo index
-    const hiddenInput = document.getElementById(`cartDetails[${index}]`);
-    if (hiddenInput) hiddenInput.value = val;
-
-    updateSummary();
-  });
-});
-
-// chạy lần đầu
-updateSummary();
-
+  // chạy lần đầu
+  updateSummary();
 </script>
 

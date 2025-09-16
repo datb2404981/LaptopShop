@@ -1,11 +1,13 @@
 import { prisma } from "config/client";
 import { ACCOUNT_TYPE } from "config/constant";
+import { hashPassword } from "services/users";
 
 const initDatabase = async () => {
     const countUser = await prisma.user.count();
     const countRole = await prisma.role.count();
     const countProduct = await prisma.product.count();
 
+    
     if (countRole === 0) {
         await prisma.role.createMany({
             data: [
@@ -19,6 +21,40 @@ const initDatabase = async () => {
                 },
             ]
         })
+    }
+    if (countUser === 0) {
+        await prisma.user.create({
+        data: {
+            fullname: "dat",
+            username: "dat@gmail.com",
+            password: await hashPassword("12345678"),
+            address: null,
+            phone: null,
+            avatar: null,
+            accountType: ACCOUNT_TYPE.SYSTEM,
+            role: {
+            connect: {
+                id: 1,
+            },
+            },
+        },
+        });
+        await prisma.user.create({
+        data: {
+            fullname: "vandat",
+            username: "vandat@gmail.com",
+            password: await hashPassword("12345678"),
+            address: null,
+            phone: null,
+            avatar: null,
+            accountType: ACCOUNT_TYPE.SYSTEM,
+            role: {
+            connect: {
+                id: 2,
+            },
+            },
+        },
+        });
     }
     if (countProduct === 0) {
         const products = [

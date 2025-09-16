@@ -18,6 +18,7 @@ model User {
   avatar      String? @db.VarChar(255)
   roleId      Int
   cart        Cart?
+  orders      Order[]
   role        Role    @relation(fields: [roleId], references: [id])
 
   @@index([roleId], map: "users_roleId_fkey")
@@ -34,26 +35,38 @@ model Role {
 }
 
 model Order {
-  id         Int @id @default(autoincrement())
-  userId     Int
-  totalPrice Int
+  id              Int           @id @default(autoincrement())
+  userId          Int
+  totalPrice      Int
+  paymentMethod   String
+  paymentRef      String?
+  paymentStatus   String
+  receiverAddress String        @db.VarChar(255)
+  receiverName    String        @db.VarChar(255)
+  receiverPhone   String        @db.VarChar(255)
+  status          String        @default("PENDING")
+  orderDate   DateTime      @default(now())
+  orderdetail     OrderDetail[]
+  user            User          @relation(fields: [userId], references: [id])
 
+  @@index([userId], map: "idx_orders_userId")
   @@map("orders")
 }
 
 model Product {
-  id          Int          @id @default(autoincrement())
-  name        String       @db.VarChar(255)
+  id          Int           @id @default(autoincrement())
+  name        String        @db.VarChar(255)
   price       Int
-  discount    Int?         @default(0)
-  image       String?      @db.VarChar(255)
-  detailDesc  String       @db.Text
-  shortDesc   String       @db.VarChar(255)
+  discount    Int?          @default(0)
+  image       String?       @db.VarChar(255)
+  detailDesc  String        @db.Text
+  shortDesc   String        @db.VarChar(255)
   quantity    Int
-  sold        Int?         @default(0)
-  factory     String       @db.VarChar(255)
-  target      String       @db.VarChar(255)
+  sold        Int?          @default(0)
+  factory     String        @db.VarChar(255)
+  target      String        @db.VarChar(255)
   cartdetails CartDetail[]
+  orderdetail OrderDetail[]
 
   @@map("products")
 }
@@ -61,7 +74,7 @@ model Product {
 model Cart {
   id          Int          @id @default(autoincrement())
   userId      Int          @unique
-  sumProduct  Int
+  sumProduct  Int          @default(0)
   user        User         @relation(fields: [userId], references: [id])
   cartDetails CartDetail[]
 
@@ -87,4 +100,18 @@ model session {
   sid       String   @unique(map: "Session_sid_key")
   data      String   @db.MediumText
   expiresAt DateTime
+}
+
+model OrderDetail {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  price     Int
+  quantity  Int
+  orders    Order   @relation(fields: [orderId], references: [id], map: "OrderDetail_orderId_fkey")
+  products  Product @relation(fields: [productId], references: [id], map: "OrderDetail_productId_fkey")
+
+  @@index([orderId], map: "orderdetails_orderId_fkey")
+  @@index([productId], map: "orderdetails_productId_fkey")
+  @@map("orderdetail")
 }

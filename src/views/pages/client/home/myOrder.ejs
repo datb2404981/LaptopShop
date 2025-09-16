@@ -1,0 +1,242 @@
+<style>
+  body {
+  margin: 0;
+  padding-top: 120px; /* bằng đúng header */
+  background: #f5f8fb; /* màu xám nhạt giống trang Cart */
+}
+
+
+  /* ===== Breadcrumb ===== */
+  .breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 8px 16px;
+    margin: 0 auto 20px;
+    max-width: 1100px;
+    background: transparent;
+    border-radius: 6px;
+  }
+
+  .breadcrumb-item {
+    font-size: 16px;
+    color: #2e7d32;
+  }
+
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+    padding: 0 8px;
+    color: #999;
+  }
+
+  .breadcrumb-item a {
+    text-decoration: none;
+    color: #6cc24a;
+    transition: 0.2s;
+  }
+
+  .breadcrumb-item a:hover {
+    text-decoration: underline;
+    color: #2e7d32;
+  }
+
+  .breadcrumb-item.active {
+    color: #555;
+    font-weight: 600;
+  }
+
+  /* ===== Cart Layout ===== */
+  .cart-page {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 1200px; /* cho đẹp */
+}
+
+.cart-container {
+  flex: 0 0 80%; /* chiếm 70% như My Cart */
+  background: #ffffff; /* nền xám nhạt */
+  padding: 20px;
+  border-radius: 10px;
+}
+
+  .cart-container h2 {
+  margin: 0 0 20px;
+  padding-top: 10px; /* thêm khoảng cách với phía trên */
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+
+  .order-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+
+  .order-header {
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 15px;
+    color: #333;
+  }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .cart-item:last-child {
+    border-bottom: none;
+  }
+
+  .cart-item img {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  .item-details {
+    flex: 1;
+  }
+
+  .item-details h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #222;
+  }
+
+  .item-details p {
+    margin: 3px 0;
+    color: gray;
+    font-size: 14px;
+  }
+
+  .item-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .qty-btn {
+    border: 1px solid #ccc;
+    background: #f5f5f5;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .item-actions input {
+    width: 40px;
+    text-align: center;
+    border: none;
+    font-size: 15px;
+    background: transparent;
+  }
+
+  .item-price {
+    text-align: right;
+    min-width: 120px;
+  }
+
+  .item-price h3 {
+    margin: 0;
+    font-size: 15px;
+    color: #2e7d32;
+  }
+
+  .item-price p {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: #888;
+    text-decoration: line-through;
+  }
+
+  .btn-remove {
+    border: none;
+    background: transparent;
+    color: #d32f2f;
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 10px;
+  }
+</style>
+
+
+<!-- Breadcrumb -->
+<div class="mb-3">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">My Orders</li>
+    </ol>
+  </nav>
+</div>
+
+<div class="cart-page">
+  <!-- Left side - My Orders -->
+  <div class="cart-container">
+    <h2>My Orders (<%= orders.length %>)</h2>
+
+    <% if(orders.length === 0) { %>
+      <p style="text-align:center; padding: 30px; color: gray;">
+        📦 Bạn chưa có đơn hàng nào
+      </p>
+    <% } else { %>
+      <% orders.forEach(function(order, orderIndex){ %>
+        <!-- Thông tin đơn hàng -->
+        <div class="order-header" style="margin-bottom:10px; color:#555; display:flex; justify-content:space-between; align-items:center;">
+          <span><%= order.orderDate.toLocaleDateString("vi-VN") %></span>
+          <span style="font-weight:600; color:#000;">
+            <%= order.totalPrice.toLocaleString("vi-VN") %> đ
+          </span>
+        </div>
+
+        <% order.orderdetail.forEach(function(detail, index){ %>
+          <div class="cart-item"
+              data-price="<%= detail.products.price %>"
+              data-discount="<%= detail.products.discount || 0 %>">
+
+            <!-- Ảnh -->
+            <a href="/product/<%= detail.products.id %>">
+              <img src="/images/product/<%= detail.products.image %>" alt="<%= detail.products.name %>">
+            </a>
+
+            <!-- Thông tin sp -->
+            <div class="item-details">
+              <a href="/product/<%= detail.products.id %>" style="text-decoration:none; color:inherit;">
+                <h3><%= detail.products.name %></h3>
+              </a>
+              <p><%= detail.products.shortDesc %></p>
+            </div>
+
+            <!-- Số lượng -->
+            <div class="item-actions">
+              <input type="text" value="<%= detail.quantity %>" readonly>
+            </div>
+
+            <!-- Giá -->
+            <div class="item-price">
+              <h3>
+                <%= new Intl.NumberFormat('vi-VN', {style:'currency',currency:'VND'}).format(detail.price) %>
+              </h3>
+              <p>
+                <%= new Intl.NumberFormat('vi-VN', {style:'currency',currency:'VND'}).format(detail.products.price) %>
+              </p>
+            </div>
+          </div>
+        <% }); %>
+
+        <hr>
+      <% }); %>
+    <% } %>
+  </div>
+</div>

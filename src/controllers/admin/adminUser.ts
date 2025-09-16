@@ -8,6 +8,16 @@ const getEditUsers = async (req: Request, res: Response) => {
   if (!user) {
     return res.redirect('/admin/user');
   }
+
+  if (user.roleId != 1) {
+    const roles = await getAllRole();
+    return res.render("pages/admin/User/edit.ejs", {
+      user: user,
+      roles,
+      layout: false,
+    });
+  }
+
   const roles = await getAllRole();
   return res.render("pages/admin/User/edit.ejs", {
     user: user,

@@ -1,5 +1,7 @@
 import { prisma } from 'config/client';
 import { Product, User } from '@prisma/client';
+import { includes } from 'zod';
+import { error } from 'console';
 
 const getAllProduct = async () => {
   const products = await prisma.product.findMany();
@@ -12,6 +14,32 @@ const getProduct = async (id: string) => {
   });
   return product;
 }
+
+const getAllOrder = async () => {
+  const Orders = await prisma.order.findMany({ include: { user: true } });
+  return Orders;
+};
+
+const getAllOrderOfUser = async (user: any) => {
+  const Orders = await prisma.order.findMany({
+    where: { userId: user.id },
+    include: {
+      orderdetail: {
+        include: {
+          products: true, // lấy luôn thông tin sản phẩm
+        },
+      },
+    },
+  });
+  return Orders;
+};
+const getAllOrderDetail = async (orderId: number) => {
+  const OrderDetails = await prisma.orderDetail.findMany({
+    where: { orderId },
+    include: { orders : true,products: true }
+  });
+  return OrderDetails;
+};
 
 const handCreateProduct = async (
   name: string,
@@ -197,13 +225,124 @@ const handDeleteProductToCart = async (productId: number, user : any) => {
   });
 };
 
+const updateCartDetailBeforeCheckout = async (
+  data: { id: string, quantity: string; }[], user: any
+) => {
+  const cart = await getCart(user);
+  
+  for (let i = 0; i < data.length; i++){
+    const currentCartDetail = await prisma.cartDetail.findFirst({
+      where: {
+        cartId: cart.id,
+        productId: +data[i].id,
+      },
+    });
+    await prisma.cartDetail.update({
+      where: { id: currentCartDetail.id },
+      data: {
+        quantity: +data[i].quantity,
+      },
+    });
+  }
+};
+
+const handlerPlaceOrder = async (
+  user: any,
+  receiverName: string,
+  receiverAddress: string,
+  receiverPhone: string,
+  totalPrice: number
+) => {
+  try {
+    await prisma.$transaction(async (tx) => {
+      const cart = await tx.cart.findFirst({
+        where: { userId: user.id },
+        include: {
+          cartDetails: true,
+        },
+      });
+
+      if (cart) {
+        //create order
+        const dataOrderDetail = cart?.cartDetails?.map((item) => ({
+          price: item.price,
+          quantity: item.quantity,
+          productId: item.productId,
+        }));
+
+        await tx.order.create({
+          data: {
+            totalPrice,
+            receiverAddress,
+            receiverName,
+            receiverPhone,
+            status: "PENDENG",
+            paymentMethod: "COD",
+            paymentStatus: "PAYMENT_UNPAID",
+            userId: user.id,
+            orderdetail: {
+              create: dataOrderDetail,
+            },
+          },
+        });
+
+        for (let i = 0; i < cart.cartDetails.length; i++) {
+          const productId = cart.cartDetails[i].productId;
+          const product = await tx.product.findUnique({
+            where: { id: productId },
+          });
+
+          if (!product || product.quantity < cart.cartDetails[i].quantity) {
+            throw new Error(
+              `>>>> Error: San pham ${product.name} khong ton tai hoac khong du so luong`
+            );
+          } else {
+            //giảm quantity Product
+            await tx.product.update({
+              where: { id: productId },
+              data: {
+                quantity: { decrement: product.quantity },
+                sold: { increment: cart.cartDetails[i].quantity },
+              },
+            });
+          }
+        }
+
+        //delete cartDetail
+        await tx.cartDetail.deleteMany({
+          where: { cartId: cart.id },
+        });
+
+        //delete cart
+        await tx.cart.delete({
+          where: { id: cart.id },
+        });
+      }
+    });
+  } catch (err) {
+    return {
+      success: false,
+      message: err.message,
+    };
+  }
+
+  return {
+    success: true
+  }
+};
+
 export {
   getAllProduct,
   handCreateProduct,
   getProduct,
+  getAllOrder,
+  getAllOrderDetail,
+  getAllOrderOfUser,
   handUpdateProduct,
   handDeleteProduct,
   addProductToCard,
   getCartdetail,
   handDeleteProductToCart,
+  updateCartDetailBeforeCheckout,
+  handlerPlaceOrder,
 }; 

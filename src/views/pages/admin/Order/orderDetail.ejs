@@ -1,80 +1,129 @@
+<style>
+  .table-custom {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px; /* tạo khoảng cách giữa các row */
+}
+
+.table-custom thead {
+  background-color: #1B7D4F;
+  color: white;
+  border-radius: 8px;
+}
+
+.table-custom tbody tr {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.table-custom tbody td {
+  vertical-align: middle;
+  border: none;
+}
+.receiver-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px; /* khoảng cách giữa name và phone */
+}
+
+.receiver-info .receiver-name {
+  font-size: 1.2rem; /* chữ to hơn */
+  font-weight: 600;
+  color: #212529;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.receiver-info .receiver-name i {
+  font-size: 1.4rem; /* icon lớn hơn */
+  color: #198754; /* xanh lá (Bootstrap success) */
+}
+
+.receiver-info .receiver-phone {
+  font-size: 1rem;
+  color: #6c757d; /* xám */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.receiver-info .receiver-phone i {
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+
+</style>
+
 <div class="container-fluid px-4">
-  <h1 class="mt-4">Manage Orders</h1>
-  <!-- Breadcrumb -->
-    <div class="mb-3">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-          <li class="breadcrumb-item active"><a >Order</a></li>
-        </ol>
-      </nav>
-    </div>
+  <h1 class="mt-4">Manage Order Detail</h1>
+</div>
 
 <div class="container-fluid mt-4 px-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0">Table Order</h5>
+      <h5 class="mb-0">Table Order Detail</h5>
+      <div class="text-end receiver-info">
+      <div class="fw-bold fs-6 d-flex align-items-center justify-content-end gap-2">
+        <i class="bi bi-person-circle text-success"></i>
+        <span><%= orderDetails[0]?.orders?.receiverName || 'No Name' %></span>
+      </div>
+      <div class="text-muted d-flex align-items-center justify-content-end gap-2">
+        <i class="bi bi-telephone text-secondary"></i>
+          <span><%= orderDetails[0]?.orders?.receiverPhone || 'No Phone' %></span>
+        </div>
+      </div>
   </div>
 
+
   <table class="table align-middle table-custom">
-    <thead class="table-success">
-      <tr>
-        <th scope="col" style="width: 45%;" class="ps-3">Name Buyer</th>
-        <th scope="col" style="width: 45%;" class="text-center">Total Price</th>
-        <th scope="col" style="width: 45%;" class="text-center">Status</th>
-        <th scope="col" style="width: 45%;" class="text-center">Payment Method</th>
-        <th scope="col" style="width: 45%;" class="text-center">Payment Status</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% orders.forEach(function(order) { %>
-        <tr onclick="window.location='/admin/orderDetail/<%= order.id %>'" style="cursor:pointer;">
-          
-          <!-- Buyer Info -->
-          <td>
-            <div class="d-flex align-items-center ps-3">
-              <div>
-                <div class="fw-semibold">
-                  <%= order.receiverName || 'No Name' %>
+        <thead class="table-success">
+          <tr>
+            <th scope="col" style="width: 45%;"> Product Name</th>
+            <th scope="col" style="width: 45%;"> PRICE</th>
+            <th scope="col" style="width: 45%;"> Quantity</th>
+            <th scope="col" style="width: 45%;"> Total Price</th>
+        </thead>
+        </thead>
+        <tbody>
+          <% orderDetails.forEach(item => { %>
+            <tr class="bg-white rounded-xl shadow-sm hover:shadow-md transition">
+              <td class="flex items-center gap-3 py-3 px-3">
+                <div class="d-flex align-items-center gap-2">
+                  <img src="/images/product/<%= item.products.image %>" alt="image" style="width: 80px; height: 80px; object-fit: cover;">
+                
+                  <div>
+                    <div class="fw-semibold">
+                      <%= item.products.name %>
+                    </div>
+                    <small class="text-muted">
+                      <%= item.products.factory %>
+                    </small>
+                  </div>
                 </div>
-                <small class="text-muted">
-                  <%= order?.receiverPhone ?? "No Phone" %>
-                </small>
-              </div>
-            </div>
-          </td>
+              </td>
+              <td class="text-gray-700 px-3"><%= item.products.price.toLocaleString() %>₫
+              </td>
+              <td class="text-gray-700 px-3">
+                <span class="font-medium">
+                  <%= item.quantity %> Item
+                </span>
+              </td>
+              <td class="text-gray-700 px-3">
+                <span class="d-flex align-items-center gap-2">
+                  <span class="badge bg-success rounded-circle p-2"></span>
+                  <span class="fw-semibold text-dark">
+                    <%= item.price.toLocaleString() %>₫
+                  </span>
+                </span>
+              </td>
+            </tr>
+            <% }) %>
+        </tbody>
 
-          <!-- Total Price -->
-          <td class="text-center">
-            <div class="fw-semibold">
-              <%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.totalPrice) %>
-            </div>
-          </td>
-
-          <!-- Status -->
-          <td class="text-center">
-            <div class="fw-semibold">
-              <%= order.status %>
-            </div>
-          </td>
-
-          <!-- Payment Method -->
-          <td class="text-center">
-            <div class="fw-semibold">
-              <%= order.paymentMethod %>
-            </div>
-          </td>
-
-          <!-- Payment Status -->
-          <td class="text-center">
-            <div class="fw-semibold">
-              <%= order.paymentStatus %>
-            </div>
-          </td>
-        </tr>
-      <% }); %>
-    </tbody>
-  </table>
+      </table>
 </div>
 <style>
   .role-badge {

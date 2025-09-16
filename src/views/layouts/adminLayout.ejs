@@ -18,6 +18,47 @@
   <link href="/admin/css/styles.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+  <style> 
+  .breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 10px 0;        /* bỏ padding ngang nhiều */
+  margin: 0 0 20px 0;     /* canh sát trái */
+  background: transparent;
+  border-radius: 6px;
+}
+
+.breadcrumb-item {
+  font-size: 18px;        /* chữ to hơn */
+  color: #2e7d32;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "›";           /* dấu ngăn cách */
+  padding: 0 10px;
+  color: #aaa;
+  font-size: 18px;
+}
+
+.breadcrumb-item a {
+  text-decoration: none;
+  color: #6cc24a;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.breadcrumb-item a:hover {
+  text-decoration: underline;
+  color: #2e7d32;
+}
+
+.breadcrumb-item.active {
+  color: #333;
+  font-weight: 600;
+}
+  </style>
 </head>
 
 <body class="sb-nav-fixed">

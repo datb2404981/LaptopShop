@@ -48,7 +48,7 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Chi Tiết Sản hẩm</li>
+          <li class="breadcrumb-item active" aria-current="page">Product Details</li>
         </ol>
       </nav>
     </div>
@@ -106,13 +106,18 @@
               <!-- Quantity + Add to Cart -->
               <div class="d-flex align-items-center mb-4">
                 <div class="input-group" style="width: 120px;">
-                  <button class="btn btn-outline-secondary btn-sm" type="button">-</button>
-                  <input type="text" class="form-control text-center border-0" value="1">
-                  <button class="btn btn-outline-secondary btn-sm" type="button">+</button>
+                  <button class="btn btn-outline-secondary btn-sm" type="button" onclick="decreaseQuantity(this)">-</button>
+                  <input type="text" name="quantity" class="form-control text-center border-0" value="1" min="1">
+                  <button class="btn btn-outline-secondary btn-sm" type="button" onclick="increaseQuantity(this)">+</button>
                 </div>
-                <a href="#" class="btn btn-success rounded-pill px-4 ms-3">
-                  <i class="fa fa-shopping-cart me-2"></i> Add to cart
-                </a>
+
+                <form action="/appProductToCart" method="POST" class="ms-3">
+                  <input type="hidden" name="productId" value="<%= product.id %>">
+                  <input type="hidden" name="quantity" value="1" class="quantity-hidden">
+                  <button type="submit" class="btn btn-success rounded-pill px-4">
+                    <i class="fa fa-shopping-cart me-2"></i> Add to cart
+                  </button>
+                </form>
               </div>
             </div>
 
@@ -178,3 +183,26 @@
   </div>
   <!-- Single Product End -->
     
+  <script>
+  function increaseQuantity(btn) {
+    let input = btn.parentNode.querySelector("input[name='quantity']");
+    input.value = parseInt(input.value) + 1;
+    updateHiddenQuantity(input);
+  }
+
+  function decreaseQuantity(btn) {
+    let input = btn.parentNode.querySelector("input[name='quantity']");
+    let value = parseInt(input.value);
+    if (value > 1) {
+      input.value = value - 1;
+      updateHiddenQuantity(input);
+    }
+  }
+
+  function updateHiddenQuantity(input) {
+    // cập nhật hidden input trong form
+    const container = input.closest(".d-flex");
+    const hidden = container.querySelector(".quantity-hidden");
+    hidden.value = input.value;
+  }
+</script>

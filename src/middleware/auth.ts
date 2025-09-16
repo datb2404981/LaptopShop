@@ -16,7 +16,7 @@ const isLoginAdmin = async (req: Request, res: Response, next: NextFunction) => 
   if (user?.role?.name === "ADMIN") {
     next();
   } else {
-    return res.render("status/403.ejs",{layout: false});
+    return res.redirect("/");
   }
 }
 

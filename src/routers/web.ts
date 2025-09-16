@@ -1,12 +1,12 @@
 import express, { Express } from "express";
-import { getCart, getHomePage,getLoginPage,getSignupPage } from "controllers/client/user";
+import { getCart, getCheckout, getHomePage,getLoginPage,getSignupPage } from "controllers/client/user";
 import { getCreateUserPage, postCreateUserPage, postDeleteUserPage }
   from "controllers/admin/adminCreateUser";
 import { getEditUsers,postUpdateUser } from "controllers/admin/adminUser";
-import { getAdmin, getUser, getProduct, getOrder } from "controllers/admin/admin";
+import { getAdmin, getUser, getProduct, getOrder, getOrderDetail } from "controllers/admin/admin";
 import multer from "multer";
 import fileUploadMiddleware from "middleware/multer";
-import { getProductPage, postAddCart, postDeleteProductToCart } from "controllers/client/clientProduct";
+import { getMyOrder, getProductPage, postAddCart, postCheckout, postDeleteProductToCart, postHandleCartToCheckOut } from "controllers/client/clientProduct";
 import {
   getAdminCreateProductPage, postAdminCreateProductPage,
   getEditProducts, postUpdateProduct, postDeleteProductPage
@@ -43,6 +43,7 @@ const WebRouters = (app : Express) => {
   
   //Admin/order
   adminRouter.get('/order', getOrder);
+  adminRouter.get("/orderDetail/:id", getOrderDetail);
   
   //Admin/
   adminRouter.get('/', getAdmin);
@@ -75,10 +76,22 @@ const WebRouters = (app : Express) => {
   //cart
   clientRouter.get('/cart', getCart);
   clientRouter.post("/cart/deleteProduct", postDeleteProductToCart);
+  clientRouter.post('/confirmCart', postHandleCartToCheckOut);
+  clientRouter.get('/checkout', getCheckout);
+  clientRouter.post("/placeCheckout", postCheckout);
+  clientRouter.get("/myOrders", getMyOrder);
 
   //Product
   clientRouter.post('/appProductToCart', postAddCart);
   clientRouter.get('/product/:id', getProductPage);
+
+  //Profile
+  clientRouter.get("/profile/:id", getEditUsers);
+  clientRouter.post(
+    "/updateUser",
+    fileUploadMiddleware("avatar", "images/client"),
+    postUpdateUser
+  );
 
   //Home
   clientRouter.get('/', getHomePage);
