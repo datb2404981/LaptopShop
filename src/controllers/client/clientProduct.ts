@@ -71,6 +71,13 @@ const getMyOrder = async (req: Request, res: Response) => {
 
 }
 
+const getAllProductPage = async (req: Request, res: Response) => {
+  return res.render("pages/client/product/allProducts.ejs", {
+    layout: "layouts/clientLayout",
+    hideFooter: false,
+  });
+}
+
 export {
   getProductPage,
   postAddCart,
@@ -78,4 +85,5 @@ export {
   postHandleCartToCheckOut,
   postCheckout,
   getMyOrder,
+  getAllProductPage,
 };

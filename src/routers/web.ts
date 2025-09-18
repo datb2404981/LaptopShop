@@ -6,7 +6,7 @@ import { getEditUsers,postUpdateUser } from "controllers/admin/adminUser";
 import { getAdmin, getUser, getProduct, getOrder, getOrderDetail } from "controllers/admin/admin";
 import multer from "multer";
 import fileUploadMiddleware from "middleware/multer";
-import { getMyOrder, getProductPage, postAddCart, postCheckout, postDeleteProductToCart, postHandleCartToCheckOut } from "controllers/client/clientProduct";
+import { getAllProductPage, getMyOrder, getProductPage, postAddCart, postCheckout, postDeleteProductToCart, postHandleCartToCheckOut } from "controllers/client/clientProduct";
 import {
   getAdminCreateProductPage, postAdminCreateProductPage,
   getEditProducts, postUpdateProduct, postDeleteProductPage
@@ -14,6 +14,7 @@ import {
 import { getSuccessRedirectPage, postLogOut, postSignupPage } from "controllers/client/clientAuth";
 import passport from "passport";
 import { isLoginAdmin, isLoginUser } from "middleware/auth";
+import { getAllProduct } from "services/products";
 
 
 const clientRouter = express.Router();
@@ -84,6 +85,7 @@ const WebRouters = (app : Express) => {
   //Product
   clientRouter.post('/appProductToCart', postAddCart);
   clientRouter.get('/product/:id', getProductPage);
+  clientRouter.get("/product", getAllProductPage);
 
   //Profile
   clientRouter.get("/profile/:id", getEditUsers);

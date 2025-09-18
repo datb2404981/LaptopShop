@@ -1,39 +1,185 @@
+<!-- Import Font -->
+<link
+  href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+  rel="stylesheet"
+/>
+<link href="https://fonts.cdnfonts.com/css/bernoru" rel="stylesheet" />
+
 <style>
-  .text-success {
-  color: #7CB342 !important;
+  body {
+    padding-top: 120px;
+  }
+
+  /* Khung mỗi slide */
+  .banner-slide {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: radial-gradient(
+      ellipse at 60% 40%,
+      #7be495 0%,
+      #329d53 60%,
+      #183153 100%
+    );
+    border-radius: 32px;
+    height: 320px;
+    padding: 50px 60px;
+    box-shadow: 0 12px 40px rgba(31, 38, 135, 0.15);
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Text bên trái */
+  .banner-content {
+    color: white;
+    max-width: 48%;
+    z-index: 2;
+    text-align: left;
+    padding-left: 40px;
+  }
+
+  .banner-content h2 {
+    font-family: "Bernoru", sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .banner-content h2 span {
+    color: #ffe066;
+    letter-spacing: 2px;
+  }
+
+  .banner-content p {
+    font-family: "Montserrat", sans-serif;
+    margin: 10px 0 0;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #eaffea;
+  }
+
+  /* Hình bên phải */
+  .banner-image {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    z-index: 1;
+    padding-left: 40px;
+  }
+
+  .banner-image img {
+  max-height: 380px; /* ảnh cao hơn */
+  max-width: 110%;   /* ảnh to hơn chiều ngang */
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 12px 36px rgba(0, 0, 0, 0.25));
 }
+
+  /* Carousel */
+  #carouselExample {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .carousel-inner {
+    width: 100%;
+  }
+
+  .carousel-item.active {
+    display: flex !important;
+    position: relative;
+  }
+
+  /* Nút điều hướng */
+.carousel-control-prev,
+.carousel-control-next {
+  width: 45px;
+  height: 45px;
+  top: 50%; /* căn giữa theo chiều dọc */
+  transform: translateY(-50%);
+  opacity: 0.9;
+}
+
+.carousel-control-prev {
+  left: 15px;
+}
+
+.carousel-control-next {
+  right: 15px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-size: 70% 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent; /* bỏ nền trắng */
+  border: none; /* bỏ viền */
+  filter: invert(1); /* icon trắng trên nền tối */
+}
+
 </style>
+
 <!-- Hero Start -->
-<div class="container-fluid py-5 mb-5 hero-header">
-  <div class="container py-5">
-    <div class="row g-5 align-items-center">
-      <div class="col-md-12 col-lg-7">
-        <h4 class="mb-3 text-warning">100% Sản Phẩm Chính Hãng</h4>
-        <h1 class="mb-5 display-3 text-success">Hàng cao cấp <br/> Rẻ vô địch</h1>
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <!-- Slide 1 -->
+    <div class="carousel-item active">
+      <div class="banner-slide">
+        <div class="banner-content">
+          <h2>POWERFUL <span>PERFORMANCE</span></h2>
+          <p>High Performance, Sleek Design, Long Battery Life</p>
+        </div>
+        <div class="banner-image">
+          <img src="/client/img/sanpham_01.png" alt="Laptop" />
+        </div>
       </div>
-      <div class="col-md-12 col-lg-5">
-        <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
-          <div class="carousel-inner" role="listbox">
-            <div class="carousel-item active rounded">
-              <img src="client/img/hero-img-1.png" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-              <a href="#" class="btn px-4 py-2 text-white rounded">Fruites</a>
-            </div>
-            <div class="carousel-item rounded">
-              <img src="client/img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
-              <a href="#" class="btn px-4 py-2 text-white rounded">Vesitables</a>
-            </div>
-          </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
+    </div>
+    <!-- Slide 2 -->
+    <div class="carousel-item">
+      <div class="banner-slide">
+        <div class="banner-content">
+          <h2>SLEEK <span>DESIGN</span></h2>
+          <p>Modern style with premium build quality</p>
+        </div>
+        <div class="banner-image">
+          <img src="/client/img/sanpham_02.png" alt="Laptop" />
+        </div>
+      </div>
+    </div>
+    <!-- Slide 3 -->
+    <div class="carousel-item">
+      <div class="banner-slide">
+        <div class="banner-content">
+          <h2>LONG <span>BATTERY</span></h2>
+          <p>Work and play all day without charging</p>
+        </div>
+        <div class="banner-image">
+          <img src="/client/img/sanpham_03.png" alt="Laptop" />
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Controls -->
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#carouselExample"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#carouselExample"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon"></span>
+  </button>
 </div>
 <!-- Hero End -->

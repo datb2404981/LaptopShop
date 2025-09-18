@@ -249,23 +249,30 @@
 
   <script>
     const homeBtn = document.getElementById("homeBtn");
-    const shopBtn = document.getElementById("shopBtn");
+  const shopBtn = document.getElementById("shopBtn");
 
-    function setActive(btn) {
-      document.querySelectorAll(".toggle-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-    }
+  function setActive(btn) {
+    document.querySelectorAll(".toggle-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  }
 
-    homeBtn.addEventListener("click", () => {
-      setActive(homeBtn);
-      window.location.href = "/";
-    });
+  // Kiểm tra URL hiện tại
+  if (window.location.pathname === "/product") {
+    setActive(shopBtn);
+  } else {
+    setActive(homeBtn);
+  }
 
-    shopBtn.addEventListener("click", () => {
-      setActive(shopBtn);
-      window.location.href = "/product";
-    });
+  // Sự kiện click
+  homeBtn.addEventListener("click", () => {
+    setActive(homeBtn);
+    window.location.href = "/";
+  });
 
+  shopBtn.addEventListener("click", () => {
+    setActive(shopBtn);
+    window.location.href = "/product";
+  });
   </script>
 </body>
 

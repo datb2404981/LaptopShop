@@ -12,6 +12,28 @@
     height: 200px;
     object-fit: cover;
   }
+  .pagination .page-item {
+  margin: -1px; /* giảm khoảng cách 2px giữa các nút */
+}
+
+.pagination .page-link {
+  padding: 6px 12px; /* thu nhỏ padding để ô gọn lại */
+  border-radius: 6px;
+}
+
+.pagination .page-link.active {
+  background-color: #0d6efd; /* màu xanh active */
+  color: #fff;
+  border-color: #0d6efd;
+}
+/* Giảm khoảng trắng giữa feature và sản phẩm nổi bật */
+.fruite.py-5 {
+  padding-top: 20px !important;  /* thay vì 3rem */
+}
+
+.fruite .container.py-5 {
+  padding-top: 10px !important;
+}
   </style>
   <!-- Spinner Start -->
   <div id="spinner"
@@ -113,6 +135,25 @@
                     <% }); %>
                 </div>
               </div>
+              <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="<%= page == 1 ? 'disabled page-link' : 'page-link' %>" href="/?page=<%= page -1 %>" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                    </li>
+                    <% for (let i = 1; i <= totalPages; i++) { %>
+                      <li class="page-item">
+                        <a class="<%= page == i ? 'active page-link' : 'page-link' %>" href="/?page=<%= i %>"><%= i %></a>
+                      </li>
+                    <% } %>
+                    <li class="page-item">
+                      <a class="<%= page == totalPages ? 'disabled page-link' : 'page-link' %>" href="/?page=<%= page + 1 %>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>

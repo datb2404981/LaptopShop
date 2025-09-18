@@ -1,0 +1,357 @@
+<style>
+  /* ToÃƒÆ’Ã‚Â n bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ trang */
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #ffffff; /* Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢i sang trÃƒÂ¡Ã‚ÂºÃ‚Â¯ng */
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Header */
+header {
+  background: #fff;
+  padding: 30px 20px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
+header h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.product-count {
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* Newsletter */
+.newsletter {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.newsletter input {
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 280px;
+}
+
+.newsletter button {
+  background: #6cc24a;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.newsletter button:hover {
+  background: #57a73c;
+}
+
+/* Filters */
+.filters {
+  background: #fff;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filter-bar {
+  background: #ffffff !important;  /* Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢i nÃƒÂ¡Ã‚Â»Ã‚Ân trÃƒÂ¡Ã‚ÂºÃ‚Â¯ng */
+  margin-top: 80px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* nhÃƒÂ¡Ã‚ÂºÃ‚Â¹ nhÃƒÆ’Ã‚Â ng */
+  border-radius: 8px; /* bo trÃƒÆ’Ã‚Â²n cho Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â¹p */
+}
+.filter-bar input {
+  width: 260px;
+  border: 1px solid #ccc;
+  border-radius: 999px;
+  padding: 0.55rem 1.2rem;
+}
+.filter-bar .btn {
+  border-radius: 999px;
+  padding: 0.6rem 1.6rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.filter-options .dropdown-menu {
+  min-width: 12rem;
+}
+
+.filter-options .dropdown-toggle::after {
+  margin-left: 0.65rem;
+  vertical-align: 0.1em;
+  border-top-width: 0.55em;
+  border-right-width: 0.45em;
+  border-left-width: 0.45em;
+}
+
+.filter-search {
+  gap: 0.75rem;
+}
+
+.filters select:hover {
+  border-color: #6cc24a;
+}
+
+/* Product Grid */
+main.grid {
+  padding: 40px 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 25px;
+}
+
+/* Product Card */
+.card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+.card img {
+  max-width: 100%;
+  height: 160px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
+.card h4 {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.price {
+  font-weight: bold;
+  color: #6cc24a;
+  margin-bottom: 15px;
+}
+
+/* Add to Cart */
+.add-cart {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: #6cc24a;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #fff;
+  font-size: 18px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: background 0.3s;
+}
+
+.add-cart:hover {
+  background: #57a73c;
+}
+
+.product-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #eee;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.product-img {
+  height: 220px;
+  width: 100%;
+  object-fit: cover;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.card-body {
+  padding: 16px;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 12px;
+  min-height: 40px;
+}
+
+.card-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2e7d32; /* xanh cho nổi bật */
+}
+
+.btn-add {
+  border-radius: 30px;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-add:hover {
+  background: #0d6efd;
+  color: #fff;
+}
+
+</style>
+  
+<!-- Thanh filter + search -->
+<div class="filter-bar d-flex align-items-center justify-content-between gap-3 p-3 bg-white shadow-sm rounded-3 mt-4">
+  <!-- Dropdown filter -->
+  <div class="d-flex align-items-center gap-3">
+    <div class="dropdown">
+      <button class="btn btn-outline-success rounded-pill px-4" type="button" id="brandFilter" data-bs-toggle="dropdown" aria-expanded="false">
+        Brands
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="brandFilter">
+        <li><a class="dropdown-item" href="#">All Brands</a></li>
+        <li><a class="dropdown-item" href="#">Rolex</a></li>
+        <li><a class="dropdown-item" href="#">Omega</a></li>
+      </ul>
+    </div>
+
+    <div class="dropdown">
+      <button class="btn btn-outline-success rounded-pill px-4" type="button" id="genderFilter" data-bs-toggle="dropdown" aria-expanded="false">
+        Gender
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="genderFilter">
+        <li><a class="dropdown-item" href="#">All</a></li>
+        <li><a class="dropdown-item" href="#">Men</a></li>
+        <li><a class="dropdown-item" href="#">Women</a></li>
+      </ul>
+    </div>
+
+    <!-- Filter giá -->
+    <div class="filter-price card border-0 shadow-sm rounded-3 px-3 py-2">
+      <label for="priceRange" class="form-label d-flex justify-content-between">
+        <span>Giá:</span>
+        <span id="priceValue" class="fw-semibold text-primary">0 ₫</span>
+      </label>
+      <input type="range" class="form-range" min="0" max="50000000" step="1000000" id="priceRange">
+    </div>
+  </div>
+
+  <!-- Search box -->
+  <div class="d-flex align-items-center gap-2">
+    <input type="text" class="form-control rounded-pill px-3" placeholder="Search product...">
+    <button class="btn btn-success rounded-pill px-4">Search</button>
+  </div>
+</div>
+
+  <main class="grid">
+    <% let products = [
+      {name:"Carl F. Bucherer", price:1250, img:"/images/watch1.png"},
+      {name:"Swatch SYXG101 Skinboot", price:670, img:"/images/watch2.png"},
+      {name:"HUGO 1530081 Own", price:1250, img:"/images/watch3.png"},
+      {name:"Fossil FS4735 Brown Leather", price:760, img:"/images/watch4.png"},
+      {name:"HUGO 1530021 Dare", price:1250, img:"/images/watch5.png"},
+      {name:"Casio AQ-230GA-9DMQYES", price:340, img:"/images/watch6.png"},
+      {name:"Watch Model 7", price:950, img:"/images/watch7.png"},
+      {name:"Watch Model 8", price:880, img:"/images/watch8.png"},
+      {name:"Watch Model 9", price:999, img:"/images/watch9.png"},
+    ]; %>
+
+    <div class="col-lg-12">
+    <div class="row g-4">
+      <% products.forEach((product)=> { %>
+          <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+            <div class="card product-card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                
+                <a href="/product/<%= product.id %>" class="text-decoration-none d-block">
+                  <div class="position-relative">
+                    <img src="/images/product/<%= product.image %>" class="card-img-top product-img" alt="<%= product.name %>">
+                    <span class="badge bg-warning text-ligh position-absolute top-0 start-0 m-2 px-3 py-2 rounded-pill shadow-sm">
+                      Laptop
+                    </span>
+                  </div>
+                </a>
+            
+                
+                <div class="card-body d-flex flex-column">
+                  <a href="/product/<%= product.id %>" class="text-decoration-none">
+                    <h5 class="card-title fw-semibold text-dark text-truncate">
+                      <%= product.name %>
+                    </h5>
+                  </a>
+                  <p class="card-text text-muted small flex-grow-1" style="min-height: 40px;">
+                    <%= product.shortDesc %>
+                  </p>
+            
+                  >
+                  <div class="d-flex justify-content-between align-items-center mt-3">
+                    <span class="text-dark fw-bold fs-5">
+                      <%= new Intl.NumberFormat('vi-VN', {style: 'currency' , currency: 'VND' }).format(product.price) %>
+                    </span>
+                    <form action="/appProductToCart" method="POST">
+                      <input type="hidden" name="productId" value="<%= product.id %>" />
+                      <input type="hidden" name="quantity" value="1" />
+                      <button type="submit" class="btn btn-outline-primary rounded-pill px-3 py-1 d-flex align-items-center gap-2">
+                        <i class="fa fa-shopping-bag"></i> Add
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+          </div>
+        <% }); %>
+    </div>
+  </div>
+  </main>
+
+<script>
+  const priceRange = document.getElementById("priceRange");
+const priceValue = document.getElementById("priceValue");
+
+// format số theo chuẩn VNĐ
+function formatVND(value) {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+}
+
+// cập nhật giá trị khi kéo
+priceRange.addEventListener("input", () => {
+  priceValue.textContent = formatVND(priceRange.value);
+});
+</script>
+
+
+

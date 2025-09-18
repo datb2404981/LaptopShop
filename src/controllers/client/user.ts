@@ -1,15 +1,23 @@
 import { Request, Response } from "express";
 import {
+  countTotalProductPages,
   getAllProduct,
   getCartdetail,
   handDeleteProductToCart,
 } from "services/products";
 
-const getHomePage =  async (req: Request, res: Response) => {
-  const products = await getAllProduct();
+const getHomePage = async (req: Request, res: Response) => {
+  const { page } = req.query;
+
+  let currentPage: number = page ? +page : 1;
+  if (currentPage <= 0) {
+    currentPage = 1;
+  }
+  const products = await getAllProduct(currentPage);
+  const totalPages = await countTotalProductPages();
   const user = req.user;
   console.log(">>> current user:", user);
-  return res.render('pages/client/home/show.ejs', { products,layout: 'layouts/clientLayout', hideFooter : false});
+  return res.render('pages/client/home/show.ejs', { products,totalPages,page,layout: 'layouts/clientLayout', hideFooter : false});
 }
 
 const getLoginPage = async (req: Request, res: Response) => {
