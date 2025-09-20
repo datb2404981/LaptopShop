@@ -576,6 +576,7 @@
         <% }); %>
       </div>
 
+      <% if(products?.length){ %>
       <!-- Pagination -->
       <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
@@ -608,6 +609,15 @@
           </li>
         </ul>
       </nav>
+      <% } else { %>
+          <div class="col-12 text-center py-5">
+            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 40vh;">
+              <i class="fas fa-search-minus fa-4x text-muted mb-3"></i>
+              <h4 class="text-muted fw-bold">Không tìm thấy sản phẩm nào</h4>
+              <p class="text-muted">Vui lòng thử thay đổi bộ lọc hoặc tìm kiếm lại.</p>
+            </div>
+          </div>
+        <% } %>
     </main>
 
     <!-- JS -->
