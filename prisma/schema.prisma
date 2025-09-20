@@ -68,6 +68,7 @@ model Product {
   cartdetails CartDetail[]
   orderdetail OrderDetail[]
 
+  @@fulltext([name, shortDesc, detailDesc, factory, target])
   @@map("products")
 }
 

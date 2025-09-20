@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
   countTotalProductPages,
   getAllProduct,
+  getAllProductLimit,
   getCartdetail,
   handDeleteProductToCart,
 } from "services/products";
@@ -13,7 +14,7 @@ const getHomePage = async (req: Request, res: Response) => {
   if (currentPage <= 0) {
     currentPage = 1;
   }
-  const products = await getAllProduct(currentPage);
+  const products = await getAllProductLimit(currentPage);
   const totalPages = await countTotalProductPages();
   const user = req.user;
   console.log(">>> current user:", user);

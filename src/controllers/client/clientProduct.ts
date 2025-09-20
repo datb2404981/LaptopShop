@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
-import { addProductToCard, getAllOrderOfUser, getProduct, handDeleteProductToCart, handlerPlaceOrder, updateCartDetailBeforeCheckout } from "services/products";
+import { addProductToCard, countTotalProductPages, getAllOrderOfUser, getAllProduct, getAllProductLimit, getProduct, handDeleteProductToCart, handlerPlaceOrder, updateCartDetailBeforeCheckout } from "services/products";
 import { targetOptions,factoryOptions } from "config/constant";
+import { getProductWithFilter, pricefilter } from "services/product.filter";
+import { any, array } from "zod";
+import { prisma } from "config/client";
 
 const getProductPage = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -72,11 +75,39 @@ const getMyOrder = async (req: Request, res: Response) => {
 }
 
 const getAllProductPage = async (req: Request, res: Response) => {
+  const { page, factory = "", target = "", price = "", sort = "", search = "" } = req.query as {
+    page?: string,
+    factory: string,
+    target: string,
+    price: string,
+    sort: string,
+    search:string,
+  }
+
+  let currentPage: number = page ? +page : 1;
+  if (currentPage <= 0) {
+    currentPage = 1;
+  }
+  let { products, totalPages } = await getProductWithFilter(
+    currentPage,
+    8,
+    factory,
+    target,
+    price,
+    sort,
+    search
+  );
+
   return res.render("pages/client/product/allProducts.ejs", {
+    products: products,totalPages,page,
     layout: "layouts/clientLayout",
     hideFooter: false,
   });
+
+
 }
+
+
 
 export {
   getProductPage,

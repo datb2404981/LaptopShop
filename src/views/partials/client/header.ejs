@@ -257,7 +257,7 @@
   }
 
   // Kiểm tra URL hiện tại
-  if (window.location.pathname === "/product") {
+  if (window.location.pathname.startsWith("/products")) {
     setActive(shopBtn);
   } else {
     setActive(homeBtn);
@@ -271,7 +271,7 @@
 
   shopBtn.addEventListener("click", () => {
     setActive(shopBtn);
-    window.location.href = "/product";
+    window.location.href = "/products";
   });
   </script>
 </body>

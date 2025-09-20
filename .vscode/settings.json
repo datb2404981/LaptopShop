@@ -1,5 +1,5 @@
 {
-  "CodeGPT.apiKey": "Anthropic",
+  "CodeGPT.apiKey": "OpenAI",
   "javascript.updateImportsOnFileMove.enabled": "never",
   "files.autoSave": "afterDelay",
   "geminicodeassist.project": "gen-lang-client-0592516665",
@@ -8,5 +8,7 @@
     "npm-intellisense.importQuotes": "'",
     "npm-intellisense.importLinebreak": ";\r\n",
     "npm-intellisense.importDeclarationType": "const"
-  }
+  },
+  "chatgpt.openOnStartup": true,
+  "chatgpt.commentCodeLensEnabled": false
 }

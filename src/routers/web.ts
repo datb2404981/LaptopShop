@@ -85,7 +85,7 @@ const WebRouters = (app : Express) => {
   //Product
   clientRouter.post('/appProductToCart', postAddCart);
   clientRouter.get('/product/:id', getProductPage);
-  clientRouter.get("/product", getAllProductPage);
+  clientRouter.get("/products", getAllProductPage);
 
   //Profile
   clientRouter.get("/profile/:id", getEditUsers);

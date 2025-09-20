@@ -3,7 +3,7 @@ import { Product, User } from '@prisma/client';
 import { includes } from 'zod';
 import { error } from 'console';
 
-const getAllProduct = async (page: number ) => {
+const   getAllProductLimit = async (page: number ) => {
   const products = await prisma.product.findMany({
     skip: (page - 1)*8,//offset
     take: 8,//limit
@@ -25,10 +25,16 @@ const countTotalProductPages = async () => {
 
   const totalPages = Math.ceil(totalItems / pageSize);
   return totalPages;
+  
 }
 
 const getAllOrder = async () => {
   const Orders = await prisma.order.findMany({ include: { user: true } });
+  return Orders;
+};
+
+const getAllProduct = async () => {
+  const Orders = await prisma.product.findMany();
   return Orders;
 };
 
@@ -62,13 +68,13 @@ const handCreateProduct = async (
   target: string,
   quantity: number,
   price: number,
-  discount: number
+  discount: number,
 ) => {
   const newProduct = await prisma.product.create({
     data: {
       name, shortDesc, detailDesc,
       image, factory, target,
-      quantity: +quantity, price: +price, discount: +discount
+      quantity: quantity, price: price, discount: discount
     }
   })
   
@@ -344,7 +350,7 @@ const handlerPlaceOrder = async (
 };
 
 export {
-  getAllProduct,
+  getAllProduct,getAllProductLimit,
   handCreateProduct,
   getProduct,
   getAllOrder,

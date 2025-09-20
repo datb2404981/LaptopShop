@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { getAllUsers } from 'services/users';
-import { countTotalProductPages, getAllOrder, getAllOrderDetail, getAllProduct } from "services/products";
+import { countTotalProductPages, getAllOrder, getAllOrderDetail, getAllProduct, getAllProductLimit } from "services/products";
 
 
 const getAdmin = async (req: Request, res: Response) => {
@@ -24,7 +24,7 @@ const getProduct = async (req: Request, res: Response) => {
   let currentPage : number = page ? +page : 1;
   if (currentPage <= 0) { currentPage = 1; }
 
-  const products = await getAllProduct(currentPage);
+  const products = await getAllProductLimit(currentPage);
   const totalPages = await countTotalProductPages();
 
   return res.render('pages/admin/Product/show', {

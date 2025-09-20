@@ -1,357 +1,763 @@
-<style>
-  /* ToÃƒÆ’Ã‚Â n bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ trang */
-body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #ffffff; /* Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢i sang trÃƒÂ¡Ã‚ÂºÃ‚Â¯ng */
-  margin: 0;
-  padding: 0;
-  color: #333;
-}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Page</title>
 
-/* Header */
-header {
-  background: #fff;
-  padding: 30px 20px;
-  border-bottom: 1px solid #eee;
-  text-align: center;
-}
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
 
-header h2 {
-  font-size: 28px;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
+    <style>
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #ffffff;
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
 
-.product-count {
-  color: #888;
-  font-size: 14px;
-  margin-bottom: 20px;
-}
+      /* Header */
+      header {
+        background: #fff;
+        padding: 30px 20px;
+        border-bottom: 1px solid #eee;
+        text-align: center;
+      }
 
-/* Newsletter */
-.newsletter {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
-}
+      main {
+        padding-top: 35px; /* tránh header đè lên filter */
+      }
 
-.newsletter input {
-  padding: 10px 14px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  width: 280px;
-}
+      /* Filter bar */
+      .filter-bar {
+        background: #ffffff;
+        margin-bottom: 30px;
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+      }
 
-.newsletter button {
-  background: #6cc24a;
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.3s;
-}
+      .filter-bar input {
+        width: 260px;
+        border: 1px solid #ccc;
+        border-radius: 999px;
+        padding: 0.55rem 1.2rem;
+      }
 
-.newsletter button:hover {
-  background: #57a73c;
-}
+      .filter-bar .btn {
+        border-radius: 999px;
+        padding: 0.6rem 1.6rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
 
-/* Filters */
-.filters {
-  background: #fff;
-  padding: 15px 20px;
-  border-bottom: 1px solid #eee;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
+      /* Product Card */
+      .product-card {
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        border-radius: 12px;
+        overflow: hidden;
+      }
 
-.filter-bar {
-  background: #ffffff !important;  /* Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢i nÃƒÂ¡Ã‚Â»Ã‚Ân trÃƒÂ¡Ã‚ÂºÃ‚Â¯ng */
-  margin-top: 80px;
-  padding: 10px 15px;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* nhÃƒÂ¡Ã‚ÂºÃ‚Â¹ nhÃƒÆ’Ã‚Â ng */
-  border-radius: 8px; /* bo trÃƒÆ’Ã‚Â²n cho Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â¹p */
-}
-.filter-bar input {
-  width: 260px;
-  border: 1px solid #ccc;
-  border-radius: 999px;
-  padding: 0.55rem 1.2rem;
-}
-.filter-bar .btn {
-  border-radius: 999px;
-  padding: 0.6rem 1.6rem;
-  font-weight: 600;
-  font-size: 0.95rem;
-}
+      .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      }
 
-.filter-options .dropdown-menu {
-  min-width: 12rem;
-}
+      .product-img {
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+        display: block;
+      }
 
-.filter-options .dropdown-toggle::after {
-  margin-left: 0.65rem;
-  vertical-align: 0.1em;
-  border-top-width: 0.55em;
-  border-right-width: 0.45em;
-  border-left-width: 0.45em;
-}
+      @media (max-width: 768px) {
+        .product-img {
+          height: 150px;
+        }
+      }
 
-.filter-search {
-  gap: 0.75rem;
-}
+      .card-body {
+        padding: 12px 15px;
+        text-align: left;
+      }
 
-.filters select:hover {
-  border-color: #6cc24a;
-}
+      .card-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
 
-/* Product Grid */
-main.grid {
-  padding: 40px 30px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 25px;
-}
+      .card-text {
+        font-size: 0.85rem;
+        color: #666;
+        min-height: 36px;
+      }
 
-/* Product Card */
-.card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-  transition: transform 0.25s, box-shadow 0.25s;
-}
+      .btn-add {
+        border-radius: 30px;
+        padding: 6px 14px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+      }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-}
+      .btn-add:hover {
+        background: #0d6efd;
+        color: #fff;
+      }
 
-.card img {
-  max-width: 100%;
-  height: 160px;
-  object-fit: contain;
-  margin-bottom: 12px;
-}
+      /* Dropdown toggle */
+      .filter-bar .dropdown-toggle {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 8px 14px;
+        background: #fff;
+        font-weight: 500;
+        color: #333;
+        transition: all 0.2s ease;
+      }
 
-.card h4 {
-  font-size: 16px;
-  margin: 10px 0;
-}
+      .filter-bar .dropdown-toggle:hover {
+        background-color: #e9f5e9;
+        color: #2e7d32;
+        border-color: #6cc24a;
+      }
 
-.price {
-  font-weight: bold;
-  color: #6cc24a;
-  margin-bottom: 15px;
-}
+      /* Style cho nút filter và sort màu xanh lá */
+      .filter-bar .dropdown-toggle,
+      .filter-bar .btn-outline-secondary.dropdown-toggle {
+        border: 1.5px solid #43a047;
+        color: #388e3c;
+        background: #fff;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+      .filter-bar .dropdown-toggle:hover,
+      .filter-bar .btn-outline-secondary.dropdown-toggle:hover,
+      .filter-bar .dropdown-toggle.active,
+      .filter-bar .btn-outline-secondary.dropdown-toggle.active {
+        background: #e9f5e9;
+        color: #1b5e20;
+        border-color: #43a047;
+      }
 
-/* Add to Cart */
-.add-cart {
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
-  background: #6cc24a;
-  border: none;
-  padding: 10px;
-  border-radius: 50%;
-  cursor: pointer;
-  color: #fff;
-  font-size: 18px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  transition: background 0.3s;
-}
+      /* Dropdown menu chỉnh lại cho dạng grid */
+      .dropdown-menu {
+        min-width: 260px !important;
+        max-width: 320px;
+        width: max-content;
+        border-radius: 14px;
+        border: 1.5px solid #c8e6c9;
+        padding: 16px 12px;
+        box-shadow: 0 8px 32px rgba(67, 160, 71, 0.08);
+        background: #fff;
+      }
 
-.add-cart:hover {
-  background: #57a73c;
-}
+      .dropdown-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
 
-.product-card {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  border-radius: 16px;
-  overflow: hidden;
-  background: #fff;
-  border: 1px solid #eee;
-}
+      .brand-item,
+      .target-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 1.5px solid #e0f2f1;
+        border-radius: 10px;
+        padding: 12px 0 8px 0;
+        background: #fff;
+        cursor: pointer;
+        transition: border-color 0.18s, box-shadow 0.18s;
+        min-width: 100px;
+        min-height: 70px;
+        font-weight: 500;
+        color: #388e3c;
+        font-size: 1rem;
+        user-select: none;
+      }
+      .brand-item.selected,
+      .target-item.selected {
+        border-color: #43a047;
+        box-shadow: 0 2px 8px rgba(67, 160, 71, 0.08);
+        background: #e9f5e9;
+        color: #1b5e20;
+      }
+      .brand-item img,
+      .target-item img {
+        width: 54px; /* tăng kích thước ảnh */
+        height: 54px;
+        object-fit: contain;
+        margin-bottom: 8px; /* tăng khoảng cách với text */
+        transition: transform 0.2s;
+      }
+      .brand-item:hover img,
+      .target-item:hover img {
+        transform: scale(1.12); /* hiệu ứng phóng to nhẹ khi hover */
+      }
+      .target-item img {
+        width: 64px; /* tăng kích thước ảnh target */
+        height: 64px;
+        object-fit: contain;
+        margin-bottom: 10px;
+        transition: transform 0.2s;
+      }
+      .target-item:hover img {
+        transform: scale(1.15); /* hiệu ứng phóng to khi hover */
+      }
 
-.product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-}
+      /* Slider */
+      .slider-container {
+        position: relative;
+        width: 500px;
+        margin: 10px auto;
+      }
 
-.product-img {
-  height: 220px;
-  width: 100%;
-  object-fit: cover;
-  border-bottom: 1px solid #f1f1f1;
-}
+      .range-slider {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        gap: 12px;
+      }
 
-.card-body {
-  padding: 16px;
-}
+      .range-slider .range-min,
+      .range-slider .range-max {
+        font-weight: bold;
+        color: #333;
+        min-width: 90px;
+        text-align: center;
+      }
 
-.card-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 8px;
-}
+      #priceRange {
+        -webkit-appearance: none;
+        flex: 1;
+        height: 6px;
+        border-radius: 5px;
+        background: linear-gradient(90deg, #4caf50, #81c784);
+        outline: none;
+        position: relative;
+        z-index: 1;
+      }
 
-.card-text {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 12px;
-  min-height: 40px;
-}
+      #priceRange::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #4caf50;
+        border: 2px solid #fff;
+        cursor: pointer;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 2;
+      }
 
-.card-price {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #2e7d32; /* xanh cho nổi bật */
-}
+      /* Tooltip */
+      .tooltip {
+        position: absolute;
+        top: -45px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #2e7d32;
+        color: #fff;
+        padding: 6px 16px;
+        border-radius: 6px;
+        font-size: 15px;
+        font-weight: bold;
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease, visibility 0.2s ease;
+      }
 
-.btn-add {
-  border-radius: 30px;
-  padding: 6px 14px;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
-}
+      .range-slider:hover .tooltip {
+        opacity: 1;
+        visibility: visible;
+      }
 
-.btn-add:hover {
-  background: #0d6efd;
-  color: #fff;
-}
+      .tooltip::after {
+        content: "";
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 6px;
+        border-style: solid;
+        border-color: #2e7d32 transparent transparent transparent;
+      }
 
-</style>
-  
-<!-- Thanh filter + search -->
-<div class="filter-bar d-flex align-items-center justify-content-between gap-3 p-3 bg-white shadow-sm rounded-3 mt-4">
-  <!-- Dropdown filter -->
-  <div class="d-flex align-items-center gap-3">
-    <div class="dropdown">
-      <button class="btn btn-outline-success rounded-pill px-4" type="button" id="brandFilter" data-bs-toggle="dropdown" aria-expanded="false">
-        Brands
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="brandFilter">
-        <li><a class="dropdown-item" href="#">All Brands</a></li>
-        <li><a class="dropdown-item" href="#">Rolex</a></li>
-        <li><a class="dropdown-item" href="#">Omega</a></li>
-      </ul>
-    </div>
+      .pagination .page-item {
+        margin: -1px;
+      }
 
-    <div class="dropdown">
-      <button class="btn btn-outline-success rounded-pill px-4" type="button" id="genderFilter" data-bs-toggle="dropdown" aria-expanded="false">
-        Gender
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="genderFilter">
-        <li><a class="dropdown-item" href="#">All</a></li>
-        <li><a class="dropdown-item" href="#">Men</a></li>
-        <li><a class="dropdown-item" href="#">Women</a></li>
-      </ul>
-    </div>
+      .pagination .page-link {
+        padding: 6px 12px;
+        border-radius: 6px;
+      }
 
-    <!-- Filter giá -->
-    <div class="filter-price card border-0 shadow-sm rounded-3 px-3 py-2">
-      <label for="priceRange" class="form-label d-flex justify-content-between">
-        <span>Giá:</span>
-        <span id="priceValue" class="fw-semibold text-primary">0 ₫</span>
-      </label>
-      <input type="range" class="form-range" min="0" max="50000000" step="1000000" id="priceRange">
-    </div>
-  </div>
+      .pagination .page-link.active {
+        background-color: #0d6efd;
+        color: #fff;
+        border-color: #0d6efd;
+      }
 
-  <!-- Search box -->
-  <div class="d-flex align-items-center gap-2">
-    <input type="text" class="form-control rounded-pill px-3" placeholder="Search product...">
-    <button class="btn btn-success rounded-pill px-4">Search</button>
-  </div>
-</div>
-
-  <main class="grid">
-    <% let products = [
-      {name:"Carl F. Bucherer", price:1250, img:"/images/watch1.png"},
-      {name:"Swatch SYXG101 Skinboot", price:670, img:"/images/watch2.png"},
-      {name:"HUGO 1530081 Own", price:1250, img:"/images/watch3.png"},
-      {name:"Fossil FS4735 Brown Leather", price:760, img:"/images/watch4.png"},
-      {name:"HUGO 1530021 Dare", price:1250, img:"/images/watch5.png"},
-      {name:"Casio AQ-230GA-9DMQYES", price:340, img:"/images/watch6.png"},
-      {name:"Watch Model 7", price:950, img:"/images/watch7.png"},
-      {name:"Watch Model 8", price:880, img:"/images/watch8.png"},
-      {name:"Watch Model 9", price:999, img:"/images/watch9.png"},
-    ]; %>
-
-    <div class="col-lg-12">
-    <div class="row g-4">
-      <% products.forEach((product)=> { %>
-          <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
-            <div class="card product-card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-                
-                <a href="/product/<%= product.id %>" class="text-decoration-none d-block">
-                  <div class="position-relative">
-                    <img src="/images/product/<%= product.image %>" class="card-img-top product-img" alt="<%= product.name %>">
-                    <span class="badge bg-warning text-ligh position-absolute top-0 start-0 m-2 px-3 py-2 rounded-pill shadow-sm">
-                      Laptop
-                    </span>
+      /* Dropdown sort giống targets/brands */
+      #sortFilter + .dropdown-menu {
+        min-width: 180px !important;
+        border-radius: 14px;
+        border: 1.5px solid #c8e6c9;
+        box-shadow: 0 8px 32px rgba(67, 160, 71, 0.08);
+        background: #fff;
+        padding: 10px 0;
+      }
+      #sortFilter + .dropdown-menu .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 18px;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #388e3c;
+        border-radius: 8px;
+        background: transparent;
+        transition: background 0.18s, color 0.18s;
+      }
+      #sortFilter + .dropdown-menu .dropdown-item:hover,
+      #sortFilter + .dropdown-menu .dropdown-item.active,
+      #sortFilter + .dropdown-menu .dropdown-item[data-sort-selected] {
+        background: #e9f5e9;
+        color: #1b5e20 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <div class="d-flex align-items-center gap-3">
+          <!-- Dropdown Brands -->
+          <div class="dropdown">
+            <button
+              class="btn dropdown-toggle d-flex align-items-center gap-2"
+              type="button"
+              id="brandFilter"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fa fa-tags"></i> Brands
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="brandFilter">
+              <div class="dropdown-grid">
+                <li>
+                  <div class="brand-item" data-value="ASUS">
+                    <img src="/images/brands/asus.jpg" alt="ASUS" />
                   </div>
-                </a>
-            
-                
-                <div class="card-body d-flex flex-column">
-                  <a href="/product/<%= product.id %>" class="text-decoration-none">
-                    <h5 class="card-title fw-semibold text-dark text-truncate">
-                      <%= product.name %>
-                    </h5>
-                  </a>
-                  <p class="card-text text-muted small flex-grow-1" style="min-height: 40px;">
-                    <%= product.shortDesc %>
-                  </p>
-            
-                  >
-                  <div class="d-flex justify-content-between align-items-center mt-3">
-                    <span class="text-dark fw-bold fs-5">
-                      <%= new Intl.NumberFormat('vi-VN', {style: 'currency' , currency: 'VND' }).format(product.price) %>
-                    </span>
-                    <form action="/appProductToCart" method="POST">
-                      <input type="hidden" name="productId" value="<%= product.id %>" />
-                      <input type="hidden" name="quantity" value="1" />
-                      <button type="submit" class="btn btn-outline-primary rounded-pill px-3 py-1 d-flex align-items-center gap-2">
-                        <i class="fa fa-shopping-bag"></i> Add
-                      </button>
-                    </form>
+                </li>
+                <li>
+                  <div class="brand-item" data-value="APPLE">
+                    <img src="/images/brands/apple.jpg" alt="Apple" />
                   </div>
-                </div>
+                </li>
+                <li>
+                  <div class="brand-item" data-value="DELL">
+                    <img src="/images/brands/dell.jpg" alt="Dell" />
+                  </div>
+                </li>
+                <li>
+                  <div class="brand-item" data-value="LG">
+                    <img src="/images/brands/lg.jpg" alt="LG" />
+                  </div>
+                </li>
+                <li>
+                  <div class="brand-item" data-value="LENOVO">
+                    <img src="/images/brands/lenovo.jpg" alt="Lenovo" />
+                  </div>
+                </li>
+                <li>
+                  <div class="brand-item" data-value="ACER">
+                    <img src="/images/brands/acer.jpg" alt="Acer" />
+                  </div>
+                </li>
               </div>
+            </ul>
           </div>
+
+          <!-- Dropdown Target -->
+          <div class="dropdown">
+            <button
+              class="btn dropdown-toggle d-flex align-items-center gap-2"
+              type="button"
+              id="targetFilter"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fa fa-laptop"></i> Target
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="targetFilter">
+              <div class="dropdown-grid">
+                <li>
+                  <div class="target-item" data-value="GAMING">
+                    <img src="/images/targets/gaming.jpg" alt="Gaming" />
+                    <span>Gaming</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="target-item" data-value="SINHVIEN-VANPHONG">
+                    <img
+                      src="/images/targets/office.jpg"
+                      alt="SINHVIEN-VANPHONG"
+                    />
+                    <span>Office</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="target-item" data-value="MONG-NHE">
+                    <img src="/images/targets/lightweight.jpg" alt="MONG-NHE" />
+                    <span>Lightweight</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="target-item" data-value="DOANH-NHAN">
+                    <img src="/images/targets/business.jpg" alt="DOANH-NHAN" />
+                    <span>Business</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="target-item" data-value="THIET-KE-DO-HOA">
+                    <img
+                      src="/images/targets/design.jpg"
+                      alt="THIET-KE-DO-HOA"
+                    />
+                    <span>Design</span>
+                  </div>
+                </li>
+              </div>
+            </ul>
+          </div>
+
+          <!-- Filter Price -->
+          <div class="slider-container position-relative">
+            <div class="range-slider d-flex align-items-center gap-2">
+              <span class="range-min">0 ₫</span>
+              <input
+                type="range"
+                id="priceRange"
+                min="0"
+                max="50000000"
+                step="1000000"
+                value="25000000"
+              />
+              <span class="range-max">50.000.000 ₫</span>
+              <div id="tooltip" class="tooltip position-absolute">
+                25.000.000 ₫
+              </div>
+            </div>
+          </div>
+
+          <!-- Sort -->
+          <div class="dropdown">
+            <button
+              class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center gap-2"
+              type="button"
+              id="sortFilter"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="bi bi-sort-alpha-down"></i> Sort
+            </button>
+            <ul class="dropdown-menu p-2" aria-labelledby="sortFilter">
+              <li>
+                <a class="dropdown-item sort-option" href="#" data-sort="asc"
+                  ><i class="bi bi-sort-alpha-down"></i> Ascending</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item sort-option" href="#" data-sort="desc"
+                  ><i class="bi bi-sort-alpha-up"></i> Descending</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="d-flex align-items-center gap-2">
+          <input
+            type="text"
+            id="searchBox"
+            class="form-control rounded-pill px-3"
+            placeholder="Search product..."
+          />
+          <button id="searchBtn" class="btn btn-success rounded-pill px-4">
+            Search
+          </button>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="row g-4">
+        <% products.forEach((product)=> { %>
+        <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+          <div class="card product-card h-100 border-0 shadow-sm">
+            <a
+              href="/product/<%= product.id %>"
+              class="text-decoration-none d-block"
+            >
+              <div class="position-relative">
+                <img
+                  src="/images/product/<%= product.image %>"
+                  class="card-img-top product-img"
+                  alt="<%= product.name %>"
+                />
+                <span
+                  class="badge bg-warning text-dark position-absolute top-0 start-0 m-2 px-3 py-2 rounded-pill shadow-sm"
+                  >Laptop</span
+                >
+              </div>
+            </a>
+
+            <div class="card-body d-flex flex-column">
+              <a href="/product/<%= product.id %>" class="text-decoration-none">
+                <h5 class="card-title fw-semibold text-dark text-truncate">
+                  <%= product.name %>
+                </h5>
+              </a>
+              <p class="card-text text-muted small flex-grow-1">
+                <%= product.shortDesc %>
+              </p>
+
+              <div
+                class="d-flex justify-content-between align-items-center mt-3"
+              >
+                <span class="text-dark fw-bold fs-5">
+                  <%= new Intl.NumberFormat('vi-VN', {style: 'currency' ,
+                  currency: 'VND' }).format(product.price) %>
+                </span>
+                <form action="/appProductToCart" method="POST">
+                  <input
+                    type="hidden"
+                    name="productId"
+                    value="<%= product.id %>"
+                  />
+                  <input type="hidden" name="quantity" value="1" />
+                  <button type="submit" class="btn btn-outline-primary btn-add">
+                    <i class="fa fa-shopping-bag"></i> Add
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
         <% }); %>
-    </div>
-  </div>
-  </main>
+      </div>
 
-<script>
-  const priceRange = document.getElementById("priceRange");
-const priceValue = document.getElementById("priceValue");
+      <!-- Pagination -->
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <a
+              class="<%= Number(page) === 1 ? 'disabled page-link' : 'page-link' %>"
+              href="/products?page=<%= Number(page) > 1 ? Number(page) - 1 : 1 %>"
+              aria-label="Previous"
+            >
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <% for (let i = 1; i <= Number(totalPages); i++) { %>
+          <li class="page-item">
+            <a
+              class="<%= Number(page) === i ? 'active page-link' : 'page-link' %>"
+              href="/products?page=<%= i %>"
+              ><%= i %></a
+            >
+          </li>
+          <% } %>
+          <li class="page-item">
+            <a
+              class="<%= Number(page) === Number(totalPages) ? 'disabled page-link' : 'page-link' %>"
+              href="/products?page=<%= Number(page) < Number(totalPages) ? Number(page) + 1 : Number(totalPages) %>"
+              aria-label="Next"
+            >
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </main>
 
-// format số theo chuẩn VNĐ
-function formatVND(value) {
-  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
-}
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const slider = document.getElementById("priceRange");
+      const tooltip = document.getElementById("tooltip");
+      const searchBox = document.getElementById("searchBox");
+      const searchBtn = document.getElementById("searchBtn");
 
-// cập nhật giá trị khi kéo
-priceRange.addEventListener("input", () => {
-  priceValue.textContent = formatVND(priceRange.value);
-});
-</script>
+      function updateTooltip() {
+        const value = parseInt(slider.value);
+        tooltip.textContent =
+          new Intl.NumberFormat("vi-VN").format(value) + " ₫";
 
+        const min = parseInt(slider.min);
+        const max = parseInt(slider.max);
+        const percent = (value - min) / (max - min);
 
+        const sliderWidth = slider.offsetWidth;
+        const thumbWidth = 20;
+        const thumbCenter =
+          percent * (sliderWidth - thumbWidth) + thumbWidth / 2;
 
+        const newLeft = slider.offsetLeft + thumbCenter;
+        tooltip.style.left = `${newLeft}px`;
+      }
+
+      function updateURL() {
+        // Lấy các filter hiện tại từ URL
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
+
+        // Lấy các factory đã chọn (tức là brand-item)
+        const factories = Array.from(
+          document.querySelectorAll(".brand-item.selected")
+        ).map((el) => el.dataset.value);
+
+        // Lấy các target đã chọn
+        const targets = Array.from(
+          document.querySelectorAll(".target-item.selected")
+        ).map((el) => el.dataset.value);
+
+        // Xóa các filter factory/target cũ
+        params.delete("factory");
+        params.delete("target");
+
+        // Thêm lại các factory/target mới
+        factories.forEach((f) => params.append("factory", f));
+        targets.forEach((t) => params.append("target", t));
+
+        // Price
+        const price = slider.value;
+        params.set("price", price);
+
+        // Search
+        const keyword = searchBox.value.trim();
+        if (keyword) {
+          params.set("search", keyword);
+        } else {
+          params.delete("search");
+        }
+
+        // Sort
+        const sortSelected = document.querySelector("[data-sort-selected]");
+        if (sortSelected) {
+          params.set("sort", sortSelected.dataset.sortSelected);
+        } else {
+          params.delete("sort");
+        }
+
+        // Reset page về 1 khi filter thay đổi
+        params.set("page", 1);
+
+        // Chuyển hướng với các filter mới
+        window.location.href = "/products?" + params.toString();
+      }
+
+      slider.addEventListener("input", updateTooltip);
+      window.addEventListener("resize", updateTooltip);
+      slider.addEventListener("change", updateURL);
+
+      document.querySelectorAll(".filter-check").forEach((cb) => {
+        cb.addEventListener("change", updateURL);
+      });
+
+      searchBtn.addEventListener("click", updateURL);
+
+      document.querySelectorAll(".sort-option").forEach((opt) => {
+        opt.addEventListener("click", function (e) {
+          e.preventDefault();
+          document
+            .querySelectorAll(".sort-option")
+            .forEach((o) => o.removeAttribute("data-sort-selected"));
+          this.setAttribute("data-sort-selected", this.dataset.sort);
+          updateURL();
+        });
+      });
+
+      updateTooltip();
+
+      // Chọn nhiều brand
+      document.querySelectorAll(".brand-item").forEach((item) => {
+        item.addEventListener("click", function () {
+          this.classList.toggle("selected");
+          updateURL();
+        });
+      });
+
+      // Chọn nhiều target
+      document.querySelectorAll(".target-item").forEach((item) => {
+        item.addEventListener("click", function () {
+          this.classList.toggle("selected");
+          updateURL();
+        });
+      });
+
+      window.addEventListener("DOMContentLoaded", function () {
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
+
+        // Factory (brand)
+        const factories = params.getAll("factory");
+        document.querySelectorAll(".brand-item").forEach((item) => {
+          if (factories.includes(item.dataset.value)) {
+            item.classList.add("selected");
+          }
+        });
+
+        // Target
+        const targets = params.getAll("target");
+        document.querySelectorAll(".target-item").forEach((item) => {
+          if (targets.includes(item.dataset.value)) {
+            item.classList.add("selected");
+          }
+        });
+
+        // Price
+        const price = params.get("price");
+        if (price && slider) {
+          slider.value = price;
+          updateTooltip();
+        }
+
+        // Search
+        const search = params.get("search");
+        if (search && searchBox) {
+          searchBox.value = search;
+        }
+      });
+    </script>
+  </body>
+</html>
