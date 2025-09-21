@@ -1,4 +1,3 @@
-import { getConnection } from "config/database";
 import { prisma } from 'config/client';
 import  Prisma  from '@prisma/client';
 import { ACCOUNT_TYPE } from 'config/constant';
