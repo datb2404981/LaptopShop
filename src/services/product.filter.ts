@@ -1,7 +1,7 @@
 import { array, lte } from 'zod';
 import { prisma } from "config/client"
 import Fuse from 'fuse.js';
-import { Product } from 'src/generated/prisma';
+import { Product } from "@prisma/client";
 
 
 const pricefilter = async (prices :{ min: number, max: number }[]) => {

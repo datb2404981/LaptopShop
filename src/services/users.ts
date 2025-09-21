@@ -1,4 +1,3 @@
-import { User } from './../generated/prisma/index.d';
 import { getConnection } from "config/database";
 import { prisma } from 'config/client';
 import  Prisma  from '@prisma/client';
