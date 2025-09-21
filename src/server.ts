@@ -7,7 +7,6 @@ import expressLayouts from "express-ejs-layouts";
 import mysql from "mysql2/promise";
 import initDatabase from "config/seed";
 import passport from "passport";
-import { getConnection } from "config/database";
 import configPassportLocal from "middleware/passport.local";
 import session from "express-session";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
@@ -16,8 +15,6 @@ import configPassportGoogle from "middleware/passport.google";
 
 const app = express();
 const port = process.env.PORT;
-
-getConnection();
 
 //config view engine
 app.set("view engine", "ejs");
