@@ -319,7 +319,7 @@ const handlerPlaceOrder = async (
             await tx.product.update({
               where: { id: productId },
               data: {
-                quantity: { decrement: product.quantity },
+                quantity: { decrement: cart.cartDetails[i].quantity },
                 sold: { increment: cart.cartDetails[i].quantity },
               },
             });
