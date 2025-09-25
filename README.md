@@ -45,7 +45,7 @@ LaptopShop/
 │   ├── middlewares/    # Auth & error handling
 │   ├── views/          # EJS templates
 │   ├── public/         # CSS, JS, images
-|   ├── screenshots/     # image web
+|   ├── screenshots/    # image web
 │   └── server.ts       # App entry
 │
 ├── prisma/
