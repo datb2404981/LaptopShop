@@ -36,23 +36,26 @@ Built with **Node.js, Express, TypeScript, Prisma (MySQL)** for the backend and 
 
 ## 📂 Project Structure  
 
+```arduino
 LaptopShop/
 │── src/
-│ ├── controllers/ # Business logic (User, Product, Order, Cart)
-│ ├── routers/ # Routes (admin + client)
-│ ├── services/ # Database services (Prisma)
-│ ├── middlewares/ # Auth & error handling
-│ ├── views/ # EJS templates
-│ ├── public/ # CSS, JS, images
-│ └── server.ts # App entry
+│   ├── controllers/    # Business logic (User, Product, Order, Cart)
+│   ├── routers/        # Routes (admin + client)
+│   ├── services/       # Database services (Prisma)
+│   ├── middlewares/    # Auth & error handling
+│   ├── views/          # EJS templates
+│   ├── public/         # CSS, JS, images
+|   ├── screenshots/     # image web
+│   └── server.ts       # App entry
 │
 ├── prisma/
-│ ├── schema.prisma # Database schema
-│ └── migrations/ # Prisma migrations
+│   ├── schema.prisma   # Database schema
+│   └── migrations/     # Prisma migrations
 │
 ├── package.json
 ├── tsconfig.json
 └── README.md
+```
 
 ---
 
